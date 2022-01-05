@@ -202,7 +202,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				// need!!
 			}
 		}
-		
 		return false;
 	} // End public boolean checkMovable()
 	
