@@ -38,12 +38,12 @@ public abstract class GamePlayer
 		if ((playColor.equalsIgnoreCase(strBlack)) || (playColor.equalsIgnoreCase(strB)))
 		{
 			this.playColor = 1;
-			System.out.print(getPlayerType() + "Choose BLACK ●! First Turn.\n\n");
+			System.out.print(getPlayerType() + "Choose BLACK ●! First Turn.\n");
 		}
 		else if ((playColor.equalsIgnoreCase(strWhite)) || (playColor.equalsIgnoreCase(strW)))
 		{
 			this.playColor = 2;
-			System.out.print(getPlayerType() + "Choose WHITE ○! Second Turn.\n\n");
+			System.out.print(getPlayerType() + "Choose WHITE ○! Second Turn.\n");
 		}
 		else
 		{
