@@ -11,12 +11,6 @@ public class HumanPlayer extends GamePlayer
 	private String name;
 	
 	private ArrayList<String> arrInput = new ArrayList<String>();
-
-	@Override
-	public String getPlayerType()
-	{
-		return "Human(" + name + ")";
-	}
 	
 	public HumanPlayer(int playerID)
 	{
@@ -27,6 +21,12 @@ public class HumanPlayer extends GamePlayer
 	{
 		super(playerID);
 		this.name = name;		
+	}
+	
+	@Override
+	public String getPlayerType()
+	{
+		return "Human(" + name + ")";
 	}
 	
 	@Override
