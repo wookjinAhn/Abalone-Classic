@@ -104,20 +104,14 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			System.out.print("\n");
 		}
 		System.out.print("\n");
-	}
+	} // End public void visualize()
 
 	// 2. 문자가 2개 이상이면 한 줄로 입력 되었는지.
 	public boolean checkInLine(ArrayList<String> arrInput)
-	{
-		int moveDirection = Integer.parseInt(arrInput.get(arrInput.size()));
-		currentPlayer.setMovdDirection(moveDirection);
-				
-		//System.out.print("\ncheckInLine\n"); 
-
+	{				
 		for (int itarr = 0; itarr < arrInput.size() - 1; itarr++)	// 마지막 direction 빼고 비교
 		{
 			String strIt = arrInput.get(itarr);
-			//System.out.print("itarr " + itarr + " : " + strIt + "\n");
 			for (int i = 0; i < board.length; i++)
 			{
 				for (int j = 0; j < board[i].length; j++)
@@ -134,101 +128,172 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		// 행 기준으로 정렬
 		IndexComparator indexComparator = new IndexComparator();
 		Collections.sort(arrPair, indexComparator);	
-
-		//System.out.print("arrPair.size() : " + arrPair.size() + "\n");
-		//for (int i =0; i < arrPair.size(); i++)
-		//{
-		//	System.out.print("arrPair : " + arrPair.get(i).getRow() + ", " + arrPair.get(i).getColumn() + "\n"); 
-		//}	
+				
+		// 0 : 하나일 때 == 아무 방향 움직이기 가능
+		// 1 : 가로
+		// 2 : 왼쪽 아래
+		// 3 : 오른쪽 아래
+		// 하나
+		if (arrPair.size() == 1)
+		{
+			currentPlayer.setLineDirection(0);
+			return true;
+		}
 		
-		// check inline
-		int lineDirection = -1;
-		
+		// 둘 셋, 
+		int garoCount = 1;
+		int leftDiagonalCount = 1;
+		int rightDiagonalCount = 1;
 		for (int i = 0; i < arrPair.size() - 1; i++)
 		{
 			int firstRow = arrPair.get(i).getRowInt();
 			int firstColumn = arrPair.get(i).getColumnInt();
 			int secondRow = arrPair.get(i+1).getRowInt();
 			int secondColumn = arrPair.get(i+1).getColumnInt();
-			// 가로로 한 줄
-			if (secondRow == firstRow)
+			// 가로
+			if (secondRow == firstRow && secondColumn == firstColumn + 2)
 			{
-				if (secondColumn == firstColumn + 2)
-				{
-					lineDirection = 0;
-					currentPlayer.setLineDirection(lineDirection);
-					System.out.print("\n");
-					System.out.print("Choose Garo!\n");
-				}
-				else 
-				{
-					lineDirection = -1;
-				}
+				garoCount++;
 			}
-
-			if (secondRow == firstRow + 1)
+			// 왼쪽 아래
+			else if (secondRow == firstRow + 1 && secondColumn == firstColumn - 1)
 			{
-				System.out.print("\n");
-				System.out.print("Choose Diagonal!\n");
-				// 왼쪽 밑 대각선으로 한 줄
-				if (secondColumn == firstColumn - 1)
-				{
-					lineDirection = 1;
-					currentPlayer.setLineDirection(lineDirection);
-					System.out.print("\n");
-					System.out.print("Choose left Diagonal!\n");
-				}
-				// 오른쪽 밑 대각선으로 한 줄
-				else if  (secondColumn == firstColumn + 1)
-				{
-					lineDirection = 2;
-					currentPlayer.setLineDirection(lineDirection);
-					System.out.print("\n");
-					System.out.print("Choose right Diagonal!\n");
-				}
-				else
-				{
-					lineDirection  = -1;
-				}
+				leftDiagonalCount++;
+			}
+			// 오른쪽 아래
+			else if (secondRow == firstRow + 1 && secondColumn == firstColumn + 1)
+			{
+				rightDiagonalCount++;
+			}
+		}
+				
+		if (garoCount == arrPair.size())
+		{
+			currentPlayer.setLineDirection(1);
+			return true;
+		}
+		else if (leftDiagonalCount == arrPair.size())
+		{
+			currentPlayer.setLineDirection(2);
+			return true;
+		}
+		else if (rightDiagonalCount == arrPair.size())
+		{
+			currentPlayer.setLineDirection(3);
+			return true;
+		}
+		else // 직선이 아닐 때
+		{
+			arrPair.clear();
+			return false;
+		}
+	} // End public boolean checkInLine(ArrayList<String> arrInput)
+		
+	// 1. 아무것도 없을 때. 
+	// 2. 상대방 돌이 있을 때
+	// 2 - 1 상대방 돌 뒤에 아무것도 없을 때.
+	// 2 - 2 상대방 돌 뒤에 내 돌이 있을 때.
+	public boolean checkMovable(ArrayList<Pair> arrPair)
+	{
+		for (int i = 0; i < board.length; i++)
+		{
+			for (int j = 0; j < board[i].length; j++)
+			{
+				// need!!
 			}
 		}
 		
-		if (lineDirection == -1)
-		{
-			for (int i = 0; i < arrPair.size(); i++)
-			{
-				arrPair.remove(i);
-			}
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
+		return false;
+	} // End public boolean checkMovable()
 	
-	// arrPair : 움직일 거 좌표 (row, column)
-	// line : 어떻게 한줄로 만들어져 있는가
-	// direction : 움직일 방향
-	public void moveLine(ArrayList<Pair> arrPair, int line, int direction)
+	public void moveLine(ArrayList<Pair> arrPair)
 	{
-		System.out.print("arrPair : " );
+		System.out.print("arrPair : \n");
 		for (int i = 0; i < arrPair.size(); i++)
 		{
 			System.out.print("( " + arrPair.get(i).getRowInt() + ", " + arrPair.get(i).getColumnInt() + " )\n");
 		}
-		
+		int lineDirection = currentPlayer.getLineDirection();
+		int moveDirection = currentPlayer.getMoveDirection();
 		int moveRowIndex = 0;
 		int moveColumnIndex = 0;
 		
 		// 일단 방해물이 없다고 가정하고 움직임.
-		switch(line)
+		switch(lineDirection)
 		{
-		case 0: // 가로
-			switch(direction)	//  1 2 
-			{					// 3 ● 4
-			case 1:				//  5 6
+		case 0:	// 1개 Pair == 아무 방향 이동 가능
+			switch(moveDirection)
+			{
+			case 1:
 				System.out.print("Swith case : 0, 1\n");
+				moveRowIndex = arrPair.get(0).getRowInt() - 1;
+				moveColumnIndex = arrPair.get(0).getColumnInt() - 1;
+
+				if (board[moveRowIndex][moveColumnIndex] == "+") // 빈공간이면
+				{
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(1);
+					board[moveRowIndex + 1][moveColumnIndex + 1] = "+";
+					
+				}
+				else
+				{
+					// need!!
+				}
+				
+				break;
+				
+			case 2:
+				System.out.print("Swith case : 0, 2\n");
+				moveRowIndex = arrPair.get(0).getRowInt() - 1;
+				moveColumnIndex = arrPair.get(0).getColumnInt() + 1;
+				
+				board[moveRowIndex][moveColumnIndex] = Integer.toString(1);
+				board[moveRowIndex + 1][moveColumnIndex - 1] = "+";
+				break;
+				
+			case 3:
+				System.out.print("Swith case : 0, 3\n");
+				moveRowIndex = arrPair.get(0).getRowInt();
+				moveColumnIndex = arrPair.get(0).getColumnInt() - 2;
+				
+				board[moveRowIndex][moveColumnIndex] = Integer.toString(1);
+				board[moveRowIndex][moveColumnIndex + 2] = "+";
+				break;
+				
+			case 4:
+				System.out.print("Swith case : 0, 4\n");
+				moveRowIndex = arrPair.get(0).getRowInt();
+				moveColumnIndex = arrPair.get(0).getColumnInt() + 2;
+				
+				board[moveRowIndex][moveColumnIndex] = Integer.toString(1);
+				board[moveRowIndex][moveColumnIndex - 2] = "+";
+				break;
+				
+			case 5:
+				System.out.print("Swith case : 0, 5\n");
+				moveRowIndex = arrPair.get(0).getRowInt() + 1;
+				moveColumnIndex = arrPair.get(0).getColumnInt() - 1;
+				
+				board[moveRowIndex][moveColumnIndex] = Integer.toString(1);
+				board[moveRowIndex - 1][moveColumnIndex + 1] = "+";
+				break;
+				
+			case 6:
+				System.out.print("Swith case : 0, 6\n");
+				moveRowIndex = arrPair.get(0).getRowInt() + 1;
+				moveColumnIndex = arrPair.get(0).getColumnInt() + 1;
+				
+				board[moveRowIndex][moveColumnIndex] = Integer.toString(1);
+				board[moveRowIndex - 1][moveColumnIndex - 1] = "+";
+				break;
+			}
+			break; // End switch(lineDirection == 2)
+			
+		case 1: // 가로
+			switch(moveDirection)	//  1 2 
+			{						// 3 ● 4
+			case 1:					//  5 6
+				System.out.print("Swith case : 1, 1\n");
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					moveRowIndex = arrPair.get(i).getRowInt() - 1;
@@ -240,154 +305,239 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 2:
-				System.out.print("Swith case : 0, 2\n");
+				System.out.print("Swith case : 1, 2\n");
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					moveRowIndex = arrPair.get(i).getRowInt() - 1;
 					moveColumnIndex = arrPair.get(i).getColumnInt() + 1;
-					System.out.print("\n");
-					System.out.print("Move Index : ( " + moveRowIndex + ", " + moveColumnIndex + " )\n");
+					
 					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex + 1][moveColumnIndex - 1] = "+";
 				}
 				break;
 				
-			case 3:
-				System.out.print("Swith case : 0, 3\n");
-				moveRowIndex = arrPair.get(0).getRowInt();
-				moveColumnIndex = arrPair.get(0).getColumnInt() - 2;
-				
-				for (int i = 0; i < arrPair.size(); i++)
-				{
-					board[moveRowIndex][moveColumnIndex + i * 2] = Integer.toString(i);
-				}
-				board[moveRowIndex][moveColumnIndex + 2 * arrPair.size()] = "+";
-				break;
-				
-			case 4:
-				System.out.print("Swith case : 0, 4\n");
-				moveRowIndex = arrPair.get(0).getRowInt();
-				moveColumnIndex = arrPair.get(0).getColumnInt() + 2;
-
-				for (int i = 0; i < arrPair.size(); i++)
-				{
-					board[moveRowIndex][moveColumnIndex + i * 2] = Integer.toString(i);
-				}
-				board[moveRowIndex][moveColumnIndex - 2] = "+";
-				break;
-				
-			case 5:
-				System.out.print("Swith case : 0, 5\n");
-				
-				break;
-				
-			case 6:
-				System.out.print("Swith case : 0, 6\n");
-				
-				break;
-			}
-		case 1: // 왼쪽 아래					(5,7)
-			switch(direction)	//  1 2 	(6,6)
-			{					// 3 ● 4	(7,5)
-			case 1:				//  5 6		(8,4)	(9,3)
-				System.out.print("Swith case : 1, 1\n");
-				
-				break;
-			case 2:				// (6,6)
-				System.out.print("Swith case : 1, 2\n");
-				moveRowIndex = arrPair.get(0).getRowInt() - 1;			// 5
-				moveColumnIndex = arrPair.get(0).getColumnInt() + 1;	// 7
-				
-				for (int i = 0; i < arrPair.size(); i++)
-				{
-					board[moveRowIndex + i][moveColumnIndex - i] = Integer.toString(i);
-				}
-				board[moveRowIndex + arrPair.size()][moveColumnIndex - arrPair.size()] = "+";
-				break;
 			case 3:
 				System.out.print("Swith case : 1, 3\n");
 				
+				for (int i = 0; i < arrPair.size(); i++)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt();
+					moveColumnIndex = arrPair.get(i).getColumnInt() - 2;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex][moveColumnIndex + 2] = "+";
+				}
 				break;
+				
 			case 4:
 				System.out.print("Swith case : 1, 4\n");
 				
+				for (int i = arrPair.size() - 1; i >= 0; i--)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt();
+					moveColumnIndex = arrPair.get(i).getColumnInt() + 2;
+
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex][moveColumnIndex - 2] = "+";
+				}
 				break;
+				
 			case 5:
 				System.out.print("Swith case : 1, 5\n");
-				moveRowIndex = arrPair.get(0).getRowInt() + 1;		
-				moveColumnIndex = arrPair.get(0).getColumnInt() -1;
-				
 				for (int i = 0; i < arrPair.size(); i++)
 				{
-					board[moveRowIndex + i][moveColumnIndex - i] = Integer.toString(i);
+					moveRowIndex = arrPair.get(i).getRowInt() + 1;
+					moveColumnIndex = arrPair.get(i).getColumnInt() - 1;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex - 1][moveColumnIndex + 1] = "+";
 				}
-				board[moveRowIndex - 1][moveColumnIndex + 1] = "+";
 				break;
+				
 			case 6:
 				System.out.print("Swith case : 1, 6\n");
-				
-				break;
-			}
-			break;
-		
-		case 2: // 오른쪽 아래
-			switch(direction)
-			{
-			case 1:	
-				System.out.print("Swith case : 2, 1\n");
-				moveRowIndex = arrPair.get(0).getRowInt() - 1;			
-				moveColumnIndex = arrPair.get(0).getColumnInt() - 1;	
-				
 				for (int i = 0; i < arrPair.size(); i++)
 				{
-					board[moveRowIndex + i][moveColumnIndex + i] = Integer.toString(i);
+					moveRowIndex = arrPair.get(i).getRowInt() + 1;
+					moveColumnIndex = arrPair.get(i).getColumnInt() + 1;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex - 1][moveColumnIndex - 1] = "+";
 				}
-				board[moveRowIndex + arrPair.size()][moveColumnIndex + arrPair.size()] = "+";
 				break;
-			case 2:
+			}
+			break; // End switch(lineDirection == 1)
+			
+		case 2: // 왼쪽 아래					(5,7)
+			switch(moveDirection)	//  1 2 	(6,6)
+			{						// 3 ● 4	(7,5)
+			case 1:					//  5 6		(8,4)	(9,3)
+				System.out.print("Swith case : 2, 1\n");
+				
+				for (int i = 0;  i < arrPair.size(); i++)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt() - 1;
+					moveColumnIndex = arrPair.get(i).getColumnInt() - 1;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex + 1][moveColumnIndex + 1] = "+";
+				}				
+				break;
+				
+			case 2:				// (6,6)
 				System.out.print("Swith case : 2, 2\n");
 				
+				for (int i = 0;  i < arrPair.size(); i++)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt() - 1;
+					moveColumnIndex = arrPair.get(i).getColumnInt() + 1;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex + 1][moveColumnIndex - 1] = "+";
+				}				
 				break;
+				
 			case 3:
 				System.out.print("Swith case : 2, 3\n");
 				
+				for (int i = 0; i < arrPair.size(); i++)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt();
+					moveColumnIndex = arrPair.get(i).getColumnInt() - 2;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex][moveColumnIndex + 2] = "+";
+				}		
 				break;
+				
 			case 4:
 				System.out.print("Swith case : 2, 4\n");
 				
+				for (int i = 0; i < arrPair.size(); i++)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt();
+					moveColumnIndex = arrPair.get(i).getColumnInt() + 2;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex][moveColumnIndex - 2] = "+";
+				}	
 				break;
 			case 5:
 				System.out.print("Swith case : 2, 5\n");
 				
+				for (int i = arrPair.size() - 1;  i >= 0 ; i--)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt() + 1;
+					moveColumnIndex = arrPair.get(i).getColumnInt() - 1;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex - 1][moveColumnIndex + 1] = "+";
+				}				
 				break;
+				
 			case 6:
 				System.out.print("Swith case : 2, 6\n");
-				moveRowIndex = arrPair.get(0).getRowInt() + 1;			
-				moveColumnIndex = arrPair.get(0).getColumnInt() + 1;	
 				
 				for (int i = 0; i < arrPair.size(); i++)
 				{
-					board[moveRowIndex + i][moveColumnIndex + i] = Integer.toString(i);
-				}
-				board[moveRowIndex - 1][moveColumnIndex - 1] = "+";
+					moveRowIndex = arrPair.get(i).getRowInt() + 1;
+					moveColumnIndex = arrPair.get(i).getColumnInt() + 1;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex - 1][moveColumnIndex - 1] = "+";
+				}	
 				break;
 			}
-			break;
+			break; // End switch(lineDirection == 2)
+		
+		case 3: // 오른쪽 아래
+			switch(moveDirection)
+			{
+			case 1:	
+				System.out.print("Swith case : 3, 1\n");
+				
+				for (int i = 0; i < arrPair.size(); i++)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt() - 1;
+					moveColumnIndex = arrPair.get(i).getColumnInt() - 1;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex + 1][moveColumnIndex + 1] = "+";
+				}
+				break;
+			case 2:
+				System.out.print("Swith case : 3, 2\n");
+				
+				for (int i = 0; i < arrPair.size(); i++)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt() - 1;
+					moveColumnIndex = arrPair.get(i).getColumnInt() + 1;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex + 1][moveColumnIndex - 1] = "+";
+				}
+				break;
+			case 3:
+				System.out.print("Swith case : 3, 3\n");
+				
+				for (int i = 0; i < arrPair.size(); i++)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt();
+					moveColumnIndex = arrPair.get(i).getColumnInt() - 2;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex][moveColumnIndex + 2] = "+";
+				}
+				break;
+			case 4:
+				System.out.print("Swith case : 3, 4\n");
+				
+				for (int i = 0; i < arrPair.size(); i++)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt();
+					moveColumnIndex = arrPair.get(i).getColumnInt() + 2;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex][moveColumnIndex - 2] = "+";
+				}
+				break;
+			case 5:
+				System.out.print("Swith case : 3, 5\n");
+				
+				for (int i = 0; i < arrPair.size(); i++)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt() + 1;
+					moveColumnIndex = arrPair.get(i).getColumnInt() - 1;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex - 1][moveColumnIndex + 1] = "+";
+				}
+				break;
+			case 6:
+				System.out.print("Swith case : 3, 6\n");
+				
+				for (int i = arrPair.size() - 1; i >= 0; i--)
+				{
+					moveRowIndex = arrPair.get(i).getRowInt() + 1;
+					moveColumnIndex = arrPair.get(i).getColumnInt() + 1;
+					
+					board[moveRowIndex][moveColumnIndex] = Integer.toString(i);
+					board[moveRowIndex - 1][moveColumnIndex - 1] = "+";
+				}
+				break;
+			}
+			break; // End switch(lineDirction == 3)
 		}
 	}
 	
 	
 	// input 값이 제대로 들어왔는지 체크. 
 	// 3. 이동 방향으로 이동할 수 있는지.
-	public void play()	// play algorithm
+	public void play()	
 	{		
 		
 		ArrayList<String> arrInput = currentPlayer.play(currentPlayer.getAlphabet());
-		
-		//for (int i = 0; i < arrInput.size(); i++)
-		//{
-		//	System.out.print(arrInput.get(i) + " ");
-		//}
-		
+
 		if(!checkInLine(arrInput))	// 1줄이 아닐 때
 		{
 			System.out.print("Your Input is Not a Line!\n");
@@ -397,26 +547,28 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		}
 		else // 한 줄이 맞을 때.
 		{
-			int moveDirection = Integer.parseInt(arrInput.get(arrInput.size() - 1));
 			System.out.print("\n");
 			System.out.print(currentPlayer.getPlayerType() + " Input is a Line!\n\n");
 			//System.out.print("Direction : " + moveDirection + "\n");
 
-			moveLine(arrPair, currentPlayer.getLineDirection(), moveDirection);
-			//moveLine(ArrayList<Pair> arrPair, int line, int direction)
-			// 1. 아무것도 없을 때. 
-			// 2. 상대방 돌이 있을 때
-			// 2 - 1 상대방 돌 뒤에 아무것도 없을 때.
-			// 2 - 2 상대방 돌 뒤에 내 돌이 있을 때.
+			int moveDirection = Integer.parseInt(arrInput.get(arrInput.size() - 1));
+			currentPlayer.setMovdDirection(moveDirection);
 			
-			// 1 2 방향인 경우 위
-			
-			// 3 4 방향인 경우 좌 우
-			
-			// 5 6 방향인 경우 밑
-		}
-		
-	}
+			if (checkMovable(arrPair))	// 움직일 수 없을 때
+			{
+				System.out.print("But You Can't Move!\n");
+				System.out.print("Choose Again!\n\n");
+				currentPlayer.getArrInput().clear();
+				play();
+			}
+			else // 움직일 수 있을 때
+			{
+				System.out.print("Move !\n");
+				moveLine(arrPair);
+			}
+
+		}	
+	} // public void play()
 	
 	public boolean checkGameOver()
 	{
@@ -444,7 +596,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			}
 		}
 		return true;
-	}
+	} // public boolean checkGameOver()
 	
 	public void changePlay() 
 	{
@@ -491,7 +643,5 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		arrPair.clear();
 		changePlayer();
 	}
-	
-	
-}
+} // public void changePlay() 
 
