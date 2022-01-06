@@ -10,6 +10,7 @@ public abstract class GamePlayer
 	private Scanner scanner;
 	private int playColor = 0;		// black = 1, white = 2 
 	private ArrayList<String> availableAlphabet = new ArrayList<String>(Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"));
+	protected ArrayList<String> arrInput = new ArrayList<String>();
 	private int lineDirection = -1; 
 	private int moveDirection = -1;
 	
@@ -64,6 +65,11 @@ public abstract class GamePlayer
 		return availableAlphabet;
 	}
 	
+	public ArrayList<String> getArrInput()
+	{
+		return arrInput;
+	}
+	
 	public int getLineDirection() 
 	{
 		return lineDirection;
@@ -84,9 +90,31 @@ public abstract class GamePlayer
 		this.moveDirection = moveDirection;
 	}
 
-	public abstract ArrayList<String> getArrInput();
-
+	public void showAvailableChoose(ArrayList<String> alphabet)
+	{
+		System.out.print(getPlayerType() + " Choose Alphabet and Direction\n");
+		System.out.print("Alphabet : ");
+		for (int i = 0; i < this.getAlphabet().size(); i++)
+		{
+			System.out.print(alphabet.get(i) + " ");
+		}
+		System.out.print(" | size : " + alphabet.size());
+		System.out.print("\n");
+		System.out.print("Direction :  1 2 \n");
+		if (this.getPlayColor() == 1)
+		{
+			System.out.print("            3 ● 4\n");
+		}
+		else
+		{
+			System.out.print("            3 ○ 4\n");
+		}
+		System.out.print("             5 6 \n");
+	}
+	
 	public abstract ArrayList<String> play(ArrayList<String> alphabet);
+	
+	public abstract boolean checkRightInput(ArrayList<Integer> arrAscii, ArrayList<String> alphabet);
 	
 	public abstract String getPlayerType();
 }

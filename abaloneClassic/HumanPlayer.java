@@ -10,7 +10,6 @@ public class HumanPlayer extends GamePlayer
 	private Scanner scanner;
 	private String name;
 	
-	private ArrayList<String> arrInput = new ArrayList<String>();
 	
 	public HumanPlayer(int playerID)
 	{
@@ -29,51 +28,12 @@ public class HumanPlayer extends GamePlayer
 		return "Human(" + name + ")";
 	}
 	
-	@Override
-	public ArrayList<String> getArrInput()
-	{
-		return arrInput;
-	}
-	
-	public void showAvailableChoose(ArrayList<String> alphabet)
-	{
-		System.out.print(getPlayerType() + " Choose Alphabet and Direction\n");
-		System.out.print("Alphabet : ");
-		for (int i = 0; i < this.getAlphabet().size(); i++)
-		{
-			System.out.print(alphabet.get(i) + " ");
-		}
-		System.out.print(" | size : " + alphabet.size());
-		System.out.print("\n");
-		System.out.print("Direction :  1 2 \n");
-		if (this.getPlayColor() == 1)
-		{
-			System.out.print("            3 ● 4\n");
-		}
-		else
-		{
-			System.out.print("            3 ○ 4\n");
-		}
-		System.out.print("             5 6 \n");
-	}
-	
-
-	
-	public void setArrInput()
-	{
-		
-	}
-	
-	public void clearArrInput()
-	{
-		arrInput.clear();
-	}
-	
 	// input 값이 제대로 들어왔는지 체크.
 	// 1. 문자 다음 숫자
 	// 2. 문자 1개 ~ 3개, 숫자 1개
 	// 3. 문자 범위 벗어났는지, 숫자 범위 벗어났는지.
 	// 4. 중복으로 들어왔는지
+	@Override
 	public boolean checkRightInput(ArrayList<Integer> arrAscii, ArrayList<String> alphabet)
 	{	
 		if (arrAscii.size() < 2)	// 2개 미만
