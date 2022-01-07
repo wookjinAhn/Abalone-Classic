@@ -21,6 +21,7 @@ public class AbaloneClassicDemo
 		
 		Random randomSelecter = new Random();
 		
+		// 랜덤값 잘 나오나 테스트
 		for(int i = 0; i < 3; i++)
 		{
 			int chooseAlphabet = minAlphabet + randomSelecter.nextInt(maxAlphabet - minAlphabet + 1);
@@ -29,8 +30,10 @@ public class AbaloneClassicDemo
 		int chooseDirection = minDirection + randomSelecter.nextInt(maxDirection - minDirection + 1);
 		System.out.print(chooseDirection + "\n");
 		
-		for (int i = 0; i < 10; i ++)
+		for (int i = 0; i < 20; i ++)
 		{
+			System.out.print("man alphabet : " + man.getAlphabet().size() + "\n");
+			System.out.print("woman alphabet : " + woman.getAlphabet().size() + "\n");
 			game.visualize();
 			game.play();
 			if (!game.checkGameOver())

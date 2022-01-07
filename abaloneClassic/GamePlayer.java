@@ -65,6 +65,11 @@ public abstract class GamePlayer
 		return availableAlphabet;
 	}
 	
+	public int getAlphabetLastIndex()
+	{
+		return availableAlphabet.size() - 1;
+	}
+	
 	public ArrayList<String> getArrInput()
 	{
 		return arrInput;
