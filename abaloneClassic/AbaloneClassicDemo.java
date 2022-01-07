@@ -1,6 +1,7 @@
 package abaloneClassic;
 
 import java.awt.CheckboxGroup;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class AbaloneClassicDemo
@@ -29,17 +30,18 @@ public class AbaloneClassicDemo
 		}
 		int chooseDirection = minDirection + randomSelecter.nextInt(maxDirection - minDirection + 1);
 		System.out.print(chooseDirection + "\n");
-		
-		for (int i = 0; i < 20; i ++)
+
+		while (!game.checkGameOver())
 		{
-			System.out.print("man alphabet : " + man.getAlphabet().size() + "\n");
-			System.out.print("woman alphabet : " + woman.getAlphabet().size() + "\n");
 			game.visualize();
 			game.play();
+			game.checkOut();
 			if (!game.checkGameOver())
 			{
 				game.changePlay();
 			}
 		}
+		System.out.print("Game Over!\n");
+		System.out.print(game.currentPlayer.getPlayerType() + " Win !");
 	}
 }

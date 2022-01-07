@@ -73,7 +73,7 @@ public class ComputerPlayer extends GamePlayer
 	}
 
 	@Override
-	public ArrayList<String> play(ArrayList<String> alphabet)
+	public ArrayList<String> play()
 	{
 		arrInput.clear();
 		
@@ -86,7 +86,7 @@ public class ComputerPlayer extends GamePlayer
 		
 		while (check)
 		{
-			showAvailableChoose(alphabet);
+			showAvailableChoose();
 			
 			int chooseNum = 1 + randomSelecter.nextInt(3);
 			
@@ -98,7 +98,7 @@ public class ComputerPlayer extends GamePlayer
 			int chooseDirection = 1 + randomSelecter.nextInt(6);
 			arrAscii.add(chooseDirection);
 			
-			check = checkRightInput(arrAscii, alphabet);
+			check = checkRightInput(arrAscii, availableAlphabet);
 		}
 		
 		return arrInput;

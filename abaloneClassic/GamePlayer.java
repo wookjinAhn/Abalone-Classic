@@ -9,8 +9,8 @@ public abstract class GamePlayer
 	private final int playerID;
 	private Scanner scanner;
 	private int playColor = 0;		// black = 1, white = 2 
-	private ArrayList<String> availableAlphabet = new ArrayList<String>(Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"));
-	protected ArrayList<String> arrInput = new ArrayList<String>();
+	protected ArrayList<String> availableAlphabet = new ArrayList<String>(Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"));
+	protected ArrayList<String> arrInput = new ArrayList<String>(1);
 	private int lineDirection = -1; 
 	private int moveDirection = -1;
 	
@@ -24,7 +24,7 @@ public abstract class GamePlayer
 		return playerID;
 	}
 
-	public int getPlayColor()		// playColor
+	public int getPlayColor()		
 	{		
 		return playColor;		
 	}
@@ -70,6 +70,11 @@ public abstract class GamePlayer
 		return availableAlphabet.size() - 1;
 	}
 	
+	public void removeLastAlphabet()
+	{
+		this.availableAlphabet.remove(availableAlphabet.size() - 1);
+	}
+	
 	public ArrayList<String> getArrInput()
 	{
 		return arrInput;
@@ -95,15 +100,15 @@ public abstract class GamePlayer
 		this.moveDirection = moveDirection;
 	}
 
-	public void showAvailableChoose(ArrayList<String> alphabet)
+	public void showAvailableChoose()
 	{
 		System.out.print(getPlayerType() + " Choose Alphabet and Direction\n");
 		System.out.print("Alphabet : ");
 		for (int i = 0; i < this.getAlphabet().size(); i++)
 		{
-			System.out.print(alphabet.get(i) + " ");
+			System.out.print(availableAlphabet.get(i) + " ");
 		}
-		System.out.print(" | size : " + alphabet.size());
+		System.out.print(" | size : " + availableAlphabet.size());
 		System.out.print("\n");
 		System.out.print("Direction :  1 2 \n");
 		if (this.getPlayColor() == 1)
@@ -117,7 +122,7 @@ public abstract class GamePlayer
 		System.out.print("             5 6 \n");
 	}
 	
-	public abstract ArrayList<String> play(ArrayList<String> alphabet);
+	public abstract ArrayList<String> play();
 	
 	public abstract boolean checkRightInput(ArrayList<Integer> arrAscii, ArrayList<String> alphabet);
 	

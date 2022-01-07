@@ -41,7 +41,7 @@ public class HumanPlayer extends GamePlayer
 			System.out.print("\n");
 			System.out.print("You Should Input More Then 2!\n");
 			System.out.print("Please Input Again!");
-			return true;
+			return false;
 		}
 		else	// 2개 이상
 		{
@@ -54,7 +54,7 @@ public class HumanPlayer extends GamePlayer
 						System.out.print("\n");
 						System.out.print("Your Input is Incorrect!\n");
 						System.out.print("Please Input Again!");
-						return true;
+						return false;
 					}
 				}
 				else	// Direction
@@ -64,7 +64,7 @@ public class HumanPlayer extends GamePlayer
 						System.out.print("\n");
 						System.out.print("Your Input is Incorrect!\n");
 						System.out.print("Please Input Again!");
-						return true;
+						return false;
 					}
 				}
 			}
@@ -82,7 +82,7 @@ public class HumanPlayer extends GamePlayer
 				System.out.print("\n");
 				System.out.print("Your Input is Duplicate!\n");
 				System.out.print("Please Input Again!");
-				return true;
+				return false;
 			}
 			
 			// Ascii -> String
@@ -92,20 +92,20 @@ public class HumanPlayer extends GamePlayer
 				char charInput = (char)intInput;
 				arrInput.add(Character.toString(charInput));
 			}
-			return false;
+			return true;
 		}
 	}
 
 	@Override
-	public ArrayList<String> play(ArrayList<String> alphabet)
+	public ArrayList<String> play()
 	{
-		arrInput.clear();
+		boolean check = false;
 		
-		boolean check = true;
-		
-		while (check)
+		while (!check)
 		{
-			showAvailableChoose(alphabet);
+			arrInput.clear();
+			
+			showAvailableChoose();
 			scanner = new Scanner(System.in);
 			
 			// input값 받아서 띄어쓰기 기준으로 각각 값을 넣음.  
@@ -120,7 +120,7 @@ public class HumanPlayer extends GamePlayer
 				arrAscii.add((int)byteAscii[0]);
 			} // End input -> Ascii code
 			
-			check = checkRightInput(arrAscii, alphabet);
+			check = checkRightInput(arrAscii, availableAlphabet);
 		}
 		return arrInput;
 	}
