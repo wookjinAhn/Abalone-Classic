@@ -2,6 +2,7 @@ package abaloneClassic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 import java.nio.charset.StandardCharsets;
 
@@ -19,7 +20,7 @@ public class HumanPlayer extends GamePlayer
 	public HumanPlayer(int playerID, String name)
 	{
 		super(playerID);
-		this.name = name;		
+		this.name = name;
 	}
 	
 	@Override
@@ -96,12 +97,113 @@ public class HumanPlayer extends GamePlayer
 		}
 	}
 
-	@Override
-	public ArrayList<String> play()
+	public boolean checkOneLine()
 	{
-		boolean check = false;
+		arrPair.clear();
 		
-		while (!check)
+		for (int itarr = 0; itarr < arrInput.size() - 1; itarr++)	// 마지막 direction 빼고 비교
+		{
+			String strIt = arrInput.get(itarr);
+			for (int i = 0; i < board.length; i++)
+			{
+				for (int j = 0; j < board[i].length; j++)
+				{
+					if (board[i][j].equals(strIt))	// 문자 같으면 좌표값 arrPair에 
+					{
+						Pair index = new Pair(i,j);	// (행, 열)
+						arrPair.add(index);
+					}
+				}
+			}
+		}
+		
+		// 행 기준으로 정렬
+		IndexComparator indexComparator = new IndexComparator();
+		Collections.sort(arrPair, indexComparator);	
+				
+		// 0 : 하나일 때 == 아무 방향 움직이기 가능
+		// 1 : 가로
+		// 2 : 왼쪽 아래
+		// 3 : 오른쪽 아래
+		if (arrPair.size() == 1)	// 하나
+		{
+			this.setLineDirection(0);
+			return true;
+		}
+		
+		// 둘 셋, 
+		int garoCount = 1;
+		int leftDiagonalCount = 1;
+		int rightDiagonalCount = 1;
+		for (int i = 0; i < arrPair.size() - 1; i++)
+		{
+			int firstRow = arrPair.get(i).getRowInt();
+			int firstColumn = arrPair.get(i).getColumnInt();
+			int secondRow = arrPair.get(i+1).getRowInt();
+			int secondColumn = arrPair.get(i+1).getColumnInt();
+			// 가로
+			if (secondRow == firstRow && secondColumn == firstColumn + 2)
+			{
+				garoCount++;
+			}
+			// 왼쪽 아래
+			else if (secondRow == firstRow + 1 && secondColumn == firstColumn - 1)
+			{
+				leftDiagonalCount++;
+			}
+			// 오른쪽 아래
+			else if (secondRow == firstRow + 1 && secondColumn == firstColumn + 1)
+			{
+				rightDiagonalCount++;
+			}
+		}
+				
+		if (garoCount == arrPair.size())
+		{
+			this.setLineDirection(1);
+			System.out.print("Garo\n");
+			return true;
+		}
+		else if (leftDiagonalCount == arrPair.size())
+		{
+			this.setLineDirection(2);
+			System.out.print("LeftDiagonal\n");
+			return true;
+		}
+		else if (rightDiagonalCount == arrPair.size())
+		{
+			this.setLineDirection(3);
+			System.out.print("RightDiagonal\n");
+			return true;
+		}
+		else // 직선이 아닐 때
+		{
+			arrPair.clear();
+			System.out.print("Not a Line\n");
+			return false;
+		}
+	}
+	
+	@Override
+	public void play()
+	{
+		System.out.print("+-------------------------------\n");
+		System.out.print("| CurrentPalyer.play() : board\n");
+		for (int i = 0; i < board.length; i++)
+		{
+			System.out.print("| ");
+			for (int j = 0; j < board[i].length; j++)
+			{
+				System.out.print(board[i][j]);
+			}
+			System.out.print("\n");
+		}
+		System.out.print("+-------------------------------\n");
+		
+		boolean bRightInput = false;
+		boolean bOneLine = false;
+		
+		while (!bOneLine)
 		{
 			arrInput.clear();
 			
@@ -120,9 +222,18 @@ public class HumanPlayer extends GamePlayer
 				arrAscii.add((int)byteAscii[0]);
 			} // End input -> Ascii code
 			
-			check = checkRightInput(arrAscii, availableAlphabet);
+			bRightInput = checkRightInput(arrAscii, availableAlphabet);
+			bOneLine = checkOneLine();
+			if (checkRightInput(arrAscii, availableAlphabet))
+			{
+				if(checkOneLine())
+				{
+					bOneLine = true;
+					break;
+				}
+			}
 		}
-		return arrInput;
+		return;
 	}
 
 }

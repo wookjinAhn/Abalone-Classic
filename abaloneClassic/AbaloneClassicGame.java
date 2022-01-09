@@ -26,6 +26,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		};
 	private ArrayList<Pair> arrPair = new ArrayList<Pair>();
 	
+	// Constructor
 	public AbaloneClassicGame(GamePlayer firstPlayer, GamePlayer secondPlayer)
 	{
 		super(firstPlayer, secondPlayer);
@@ -102,7 +103,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			}
 			System.out.print("\n");
 		}
-		System.out.print("\n");
 	} // End public void visualize()
 
 	// 
@@ -118,7 +118,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 	}
 	
 	// 2. 문자가 2개 이상이면 한 줄로 입력 되었는지.
-	public boolean checkInLine(ArrayList<String> arrInput)
+	public boolean checkOneLine(ArrayList<String> arrInput)
 	{
 		arrPair.clear();
 		
@@ -137,6 +137,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 			}
 		}
+
 		
 		// 행 기준으로 정렬
 		IndexComparator indexComparator = new IndexComparator();
@@ -863,8 +864,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		int row = 0;
 		int column = 0;
 		
-		System.out.print("moveLineDirection : " + moveDirection + "\n");
-		
 		if (currentPlayer.getPlayColor() == 1)
 		{
 			nextPlayerColor = "○";
@@ -1414,41 +1413,58 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 	// 3. 이동 방향으로 이동할 수 있는지.
 	public void play()	
 	{						
-		ArrayList<String> arrInput = currentPlayer.play();
+		currentPlayer.setBoard(board);
+		currentPlayer.play();
+		ArrayList<String> arrInput = currentPlayer.getArrInput();
 
-		if(!checkInLine(arrInput))	// 1줄이 아닐 때
+		int moveDirection = Integer.parseInt(arrInput.get(arrInput.size() - 1));
+		currentPlayer.setMovdDirection(moveDirection);
+		if (!checkMovable(arrPair))	// 움직일 수 없을 때
 		{
-			System.out.print("Your Input is Not a Line!\n");
-			System.out.print("Choose Again!\n\n");
-			//currentPlayer.getArrInput().clear();
+			//System.out.print("But You Can't Move!\n");
+			//System.out.print("Choose Again!\n\n");
+			play();
+		}
+		else // 움직일 수 있을 때
+		{
+			//System.out.print("Move !\n");
+			moveLine(arrPair);
+		}
+		
+		/*
+		if(!checkOneLine(arrInput))	// 1줄이 아닐 때
+		{
+			//System.out.print("Your Input is Not a Line!\n");
+			System.out.print("Choose Again!\n");
 			play();
 		}
 		else // 한 줄이 맞을 때.
 		{
-			System.out.print("\n");
-			System.out.print(currentPlayer.getPlayerType() + " Input is a Line!\n\n");
+			//System.out.print("\n");
+			//System.out.print(currentPlayer.getPlayerType() + " Input is a Line!\n\n");
 			
 			int moveDirection = Integer.parseInt(arrInput.get(arrInput.size() - 1));
 			currentPlayer.setMovdDirection(moveDirection);
 			
 			if (!checkMovable(arrPair))	// 움직일 수 없을 때
 			{
-				System.out.print("But You Can't Move!\n");
-				System.out.print("Choose Again!\n\n");
+				//System.out.print("But You Can't Move!\n");
+				//System.out.print("Choose Again!\n\n");
 				play();
 			}
 			else // 움직일 수 있을 때
 			{
-				System.out.print("Move !\n");
+				//System.out.print("Move !\n");
 				moveLine(arrPair);
 			}
 		}	
+		*/
 	} // public void play()
 	
 	public boolean checkGameOver()
 	{
-		// 상대방 돌이 남아있는가
-		if (nextPlayer.getAlphabet().size() == 0)
+		// 상대방 돌을 6개 먼저 밀어내는 사람이 이김. == 상대방 돌이 8개가 남아있으면 
+		if (nextPlayer.getAlphabet().size() == 8)
 		{
 			return true;
 		}
@@ -1459,7 +1475,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 	{
 		
 		int playColor = currentPlayer.getPlayColor();
-		ArrayList<String> alphabet = (ArrayList<String>)currentPlayer.getAlphabet().clone();	// Shallow copy
+		//ArrayList<String> alphabet = (ArrayList<String>)currentPlayer.getAlphabet().clone();	// Shallow copy
 		
 		if (playColor == 1)		// black Color
 		{
@@ -1496,9 +1512,16 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			}
 			System.out.print("\n");
 		}
-		System.out.print("\n");
 		
 		arrPair.clear();
+		
+		// sleep 1.5 second
+		try{
+		    Thread.sleep(1500);
+		}catch(InterruptedException e){
+		    e.printStackTrace();
+		}
+		
 		changePlayer();
 	}
 } // public void changePlay() 

@@ -21,6 +21,11 @@ public class ComputerPlayer extends GamePlayer
 		return "AI";
 	}
 	
+	// input 값이 제대로 들어왔는지 체크.
+	// 1. 문자 다음 숫자
+	// 2. 문자 1개 ~ 3개, 숫자 1개
+	// 3. 문자 범위 벗어났는지, 숫자 범위 벗어났는지.
+	// 4. 중복으로 들어왔는지
 	@Override
 	public boolean checkRightInput(ArrayList<Integer> arrAscii, ArrayList<String> alphabet)
 	{	
@@ -73,7 +78,7 @@ public class ComputerPlayer extends GamePlayer
 	}
 
 	@Override
-	public ArrayList<String> play()
+	public void play()
 	{
 		arrInput.clear();
 		
@@ -101,7 +106,7 @@ public class ComputerPlayer extends GamePlayer
 			check = checkRightInput(arrAscii, availableAlphabet);
 		}
 		
-		return arrInput;
+		
 	}
 
 }

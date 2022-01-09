@@ -31,6 +31,6 @@ public abstract class TwoPlayerTurnGame implements TurnGameInterface
 		}
 		
 		System.out.print("-------------------\n");
-		System.out.print(currentPlayer.getPlayerType() + " Turn ! \n\n");
+		System.out.print(currentPlayer.getPlayerType() + " Turn ! \n");
 	}
 }
