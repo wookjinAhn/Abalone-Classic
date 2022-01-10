@@ -108,9 +108,9 @@ public class HumanPlayer extends GamePlayer
 			{
 				for (int j = 0; j < board[i].length; j++)
 				{
-					if (board[i][j].equals(strIt))	// 문자 같으면 좌표값 arrPair에 
+					if (board[i][j].equals(strIt))
 					{
-						Pair index = new Pair(i,j);	// (행, 열)
+						Pair index = new Pair(i,j);	
 						arrPair.add(index);
 					}
 				}
@@ -196,7 +196,6 @@ public class HumanPlayer extends GamePlayer
 			showAvailableChoose();
 			scanner = new Scanner(System.in);
 			
-			// input값 받아서 띄어쓰기 기준으로 각각 값을 넣음.  
 			String strInput = scanner.nextLine();
 			String[] strArrInput = strInput.split(" ");
 			
@@ -206,10 +205,10 @@ public class HumanPlayer extends GamePlayer
 			{
 				byte[] byteAscii = strArrInput[i].getBytes(StandardCharsets.US_ASCII);
 				arrAscii.add((int)byteAscii[0]);
-			} // End input -> Ascii code
+			} 
 			
 			bRightInput = checkRightInput(arrAscii, availableAlphabet);	// arrInput 
-			bOneLine = checkOneLine();	// arrPair
+			bOneLine = checkOneLine();									// arrPair
 		}
 		setMoveDirection(Integer.parseInt(arrInput.get(arrInput.size() - 1)));
 		
