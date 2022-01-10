@@ -78,7 +78,7 @@ public abstract class GamePlayer
 		return moveDirection;
 	}
 	
-	public void setMovdDirection(int moveDirection)
+	public void setMoveDirection(int moveDirection)
 	{
 		this.moveDirection = moveDirection;
 	}
@@ -113,26 +113,31 @@ public abstract class GamePlayer
 		return arrInput;
 	}
 	
+	public ArrayList<Pair> getArrPair()
+	{
+		return arrPair;
+	}
+
+	
 	public void showAvailableChoose()
 	{
-		System.out.print(" Choose Alphabet and Direction\n");
+		//System.out.print("Choose Alphabet and Direction\n");
 		System.out.print("Alphabet : ");
 		for (int i = 0; i < this.getAlphabet().size(); i++)
 		{
 			System.out.print(availableAlphabet.get(i) + " ");
 		}
-		System.out.print(" | size : " + availableAlphabet.size());
-		System.out.print("\n");
-		System.out.print("Direction :  1 2 \n");
-		if (this.getPlayColor() == 1)
-		{
-			System.out.print("            3 ● 4\n");
-		}
-		else
-		{
-			System.out.print("            3 ○ 4\n");
-		}
-		System.out.print("             5 6 \n");
+		System.out.print(" | size : " + availableAlphabet.size() + "\n");
+//		System.out.print("Direction :  1 2 \n");
+//		if (this.getPlayColor() == 1)
+//		{
+//			System.out.print("            3 ● 4\n");
+//		}
+//		else
+//		{
+//			System.out.print("            3 ○ 4\n");
+//		}
+//		System.out.print("             5 6 \n");
 	}
 	
 	public abstract void play();

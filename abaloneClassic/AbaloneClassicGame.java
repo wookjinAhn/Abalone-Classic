@@ -15,11 +15,11 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				{" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}, // 0
 				{" ", " ", " ", " ", " ", " ", "○", " ", "○", " ", "○", " ", "○", " ", "○", " ", " ", " ", " ", " ", " "}, // 1		//     ○ ○ ○ ○ ○    
 				{" ", " ", " ", " ", " ", "○", " ", "○", " ", "○", " ", "○", " ", "○", " ", "○", " ", " ", " ", " ", " "}, // 2		//    ○ ○ ○ ○ ○ ○   
-				{" ", " ", " ", " ", "+", " ", "+", " ", "○", " ", "○", " ", "○", " ", "+", " ", "+", " ", " ", " ", " "}, // 3		//   + + ○ ○ ○ + +  
-				{" ", " ", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", " ", " "}, // 4		//  + + + + + + + + 
-				{" ", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", " "}, // 5		// + + + + + + + + +
-				{" ", " ", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", "+", " ", " ", " "}, // 6		//  + + + + + + + + 
-				{" ", " ", " ", " ", "+", " ", "+", " ", "●", " ", "●", " ", "●", " ", "+", " ", "+", " ", " ", " ", " "}, // 7		//   + + ● ● ● + +  
+				{" ", " ", " ", " ", "·", " ", "·", " ", "○", " ", "○", " ", "○", " ", "·", " ", "·", " ", " ", " ", " "}, // 3		//   + + ○ ○ ○ + +  
+				{" ", " ", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", " ", " "}, // 4		//  + + + + + + + + 
+				{" ", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", " "}, // 5		// + + + + + + + + +
+				{" ", " ", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", "·", " ", " ", " "}, // 6		//  + + + + + + + + 
+				{" ", " ", " ", " ", "·", " ", "·", " ", "●", " ", "●", " ", "●", " ", "·", " ", "·", " ", " ", " ", " "}, // 7		//   + + ● ● ● + +  
 				{" ", " ", " ", " ", " ", "●", " ", "●", " ", "●", " ", "●", " ", "●", " ", "●", " ", " ", " ", " ", " "}, // 8		//    ● ● ● ● ● ●   
 				{" ", " ", " ", " ", " ", " ", "●", " ", "●", " ", "●", " ", "●", " ", "●", " ", " ", " ", " ", " ", " "}, // 9		//     ● ● ● ● ●    
 				{" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}  // 10
@@ -95,6 +95,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			}
 		}
 		
+		currentPlayer.setBoard(board);
 		for (int i = 0; i < board.length; i++)
 		{
 			for (int j = 0; j < board[i].length; j++)
@@ -116,93 +117,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		}
 		return false;
 	}
-	
-	// 2. 문자가 2개 이상이면 한 줄로 입력 되었는지.
-	public boolean checkOneLine(ArrayList<String> arrInput)
-	{
-		arrPair.clear();
-		
-		for (int itarr = 0; itarr < arrInput.size() - 1; itarr++)	// 마지막 direction 빼고 비교
-		{
-			String strIt = arrInput.get(itarr);
-			for (int i = 0; i < board.length; i++)
-			{
-				for (int j = 0; j < board[i].length; j++)
-				{
-					if (board[i][j].equals(strIt))	// 문자 같으면 좌표값 arrPair에 
-					{
-						Pair index = new Pair(i,j);	// (행, 열)
-						arrPair.add(index);
-					}
-				}
-			}
-		}
 
-		
-		// 행 기준으로 정렬
-		IndexComparator indexComparator = new IndexComparator();
-		Collections.sort(arrPair, indexComparator);	
-				
-		// 0 : 하나일 때 == 아무 방향 움직이기 가능
-		// 1 : 가로
-		// 2 : 왼쪽 아래
-		// 3 : 오른쪽 아래
-		// 하나
-		if (arrPair.size() == 1)
-		{
-			currentPlayer.setLineDirection(0);
-			return true;
-		}
-		
-		// 둘 셋, 
-		int garoCount = 1;
-		int leftDiagonalCount = 1;
-		int rightDiagonalCount = 1;
-		for (int i = 0; i < arrPair.size() - 1; i++)
-		{
-			int firstRow = arrPair.get(i).getRowInt();
-			int firstColumn = arrPair.get(i).getColumnInt();
-			int secondRow = arrPair.get(i+1).getRowInt();
-			int secondColumn = arrPair.get(i+1).getColumnInt();
-			// 가로
-			if (secondRow == firstRow && secondColumn == firstColumn + 2)
-			{
-				garoCount++;
-			}
-			// 왼쪽 아래
-			else if (secondRow == firstRow + 1 && secondColumn == firstColumn - 1)
-			{
-				leftDiagonalCount++;
-			}
-			// 오른쪽 아래
-			else if (secondRow == firstRow + 1 && secondColumn == firstColumn + 1)
-			{
-				rightDiagonalCount++;
-			}
-		}
-				
-		if (garoCount == arrPair.size())
-		{
-			currentPlayer.setLineDirection(1);
-			return true;
-		}
-		else if (leftDiagonalCount == arrPair.size())
-		{
-			currentPlayer.setLineDirection(2);
-			return true;
-		}
-		else if (rightDiagonalCount == arrPair.size())
-		{
-			currentPlayer.setLineDirection(3);
-			return true;
-		}
-		else // 직선이 아닐 때
-		{
-			arrPair.clear();
-			return false;
-		}
-	} // End public boolean checkInLine(ArrayList<String> arrInput)
-		
 	// 1. 아무것도 없을 때. 
 	// 2. 상대방 돌이 있을 때
 	// 2 - 1 상대방 돌 뒤에 아무것도 없을 때.
@@ -233,37 +148,37 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			switch(moveDirection)
 			{
 			case 1:
-				if (board[row - 1][column - 1] == "+")
+				if (board[row - 1][column - 1] == "·")
 				{
 					return true;
 				}
 				return false;
 			case 2:
-				if (board[row - 1][column + 1] == "+")
+				if (board[row - 1][column + 1] == "·")
 				{
 					return true;
 				}
 				return false;
 			case 3:
-				if (board[row][column - 2] == "+")
+				if (board[row][column - 2] == "·")
 				{
 				return true;
 				}
 				return false;
 			case 4:
-				if (board[row][column + 2] == "+")
+				if (board[row][column + 2] == "·")
 				{
 					return true;
 				}
 				return false;
 			case 5:
-				if (board[row + 1][column - 1] == "+")
+				if (board[row + 1][column - 1] == "·")
 				{
 					return true;
 				}
 				return false;
 			case 6:
-				if (board[row + 1][column + 1] == "+")
+				if (board[row + 1][column + 1] == "·")
 				{
 					return true;
 				}
@@ -279,7 +194,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt() - 1;
 					column = arrPair.get(i).getColumnInt() - 1;
 					
-					if (board[row][column] ==  "+")
+					if (board[row][column] ==  "·")
 					{
 						count++;
 					}
@@ -297,7 +212,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt() - 1;
 					column = arrPair.get(i).getColumnInt() + 1;
 					
-					if (board[row][column] ==  "+")
+					if (board[row][column] ==  "·")
 					{
 						count++;
 					}
@@ -315,7 +230,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				
 				if (arrPair.size() == 2)
 				{
-					if (board[row][column - 2] == "+")  // + ● ●
+					if (board[row][column - 2] == "·")  // + ● ●
 					{
 						return true;
 					}
@@ -325,7 +240,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if(board[row][column - 2] == nextPlayerColor)	
 					{
-						if (board[row][column - 4] == " " || board[row][column - 4] == "+")	// ○ ● ●  or  + ○ ● ●  
+						if (board[row][column - 4] == " " || board[row][column - 4] == "·")	// ○ ● ●  or  + ○ ● ●  
 						{
 							return true;
 						}
@@ -337,7 +252,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				else if (arrPair.size() == 3)
 				{
-					if (board[row][column - 2] == "+")	// + ● ● ●
+					if (board[row][column - 2] == "·")	// + ● ● ●
 					{
 						return true;
 					}
@@ -347,7 +262,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if (board[row][column - 2] == nextPlayerColor)	// ○ ● ● ●
 					{
-						if (board[row][column - 4] == " " ||board[row][column - 4] == "+")	// + ○ ● ● ●
+						if (board[row][column - 4] == " " ||board[row][column - 4] == "·")	// + ○ ● ● ●
 						{
 							return true;
 						}
@@ -357,7 +272,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 						}
 						else if (board[row][column - 4] == nextPlayerColor)	// ○ ○ ● ● ●
 						{
-							if (board[row][column - 6] == " " || board[row][column - 6] == "+")	// ○ ○ ● ● ●  or  + ○ ○ ● ● ●
+							if (board[row][column - 6] == " " || board[row][column - 6] == "·")	// ○ ○ ● ● ●  or  + ○ ○ ● ● ●
 							{
 								return true;
 							}
@@ -375,7 +290,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 								
 				if (arrPair.size() == 2)
 				{
-					if (board[row][column + 2] == "+")  // ● ● +
+					if (board[row][column + 2] == "·")  // ● ● +
 					{
 						return true;
 					}
@@ -385,7 +300,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if(board[row][column + 2] == nextPlayerColor)	
 					{
-						if (board[row][column + 4] == " " || board[row][column + 4] == "+")	// ● ● ○  or  ● ● ○ + 
+						if (board[row][column + 4] == " " || board[row][column + 4] == "·")	// ● ● ○  or  ● ● ○ + 
 						{
 							return true;
 						}
@@ -397,7 +312,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				else if (arrPair.size() == 3)
 				{
-					if (board[row][column + 2] == "+")	// ● ● ● +
+					if (board[row][column + 2] == "·")	// ● ● ● +
 					{
 						return true;
 					}
@@ -407,7 +322,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if (board[row][column + 2] == nextPlayerColor)	// ● ● ● ○
 					{
-						if (board[row][column + 4] == " " || board[row][column + 4] == "+")	// ● ● ● ○ +
+						if (board[row][column + 4] == " " || board[row][column + 4] == "·")	// ● ● ● ○ +
 						{
 							return true;
 						}
@@ -417,7 +332,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 						}
 						else if (board[row][column + 4] == nextPlayerColor)	// ● ● ● ○ ○
 						{
-							if (board[row][column + 6] == " " || board[row][column + 6] == "+")	// ● ● ● ○ ○  or  ● ● ● ○ ○ +
+							if (board[row][column + 6] == " " || board[row][column + 6] == "·")	// ● ● ● ○ ○  or  ● ● ● ○ ○ +
 							{
 								return true;
 							}
@@ -435,7 +350,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt() + 1;
 					column = arrPair.get(i).getColumnInt() - 1;
 					
-					if (board[row][column] ==  "+")
+					if (board[row][column] ==  "·")
 					{
 						count++;
 					}
@@ -453,7 +368,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt() + 1;
 					column = arrPair.get(i).getColumnInt() + 1;
 					
-					if (board[row][column] ==  "+")
+					if (board[row][column] ==  "·")
 					{
 						count++;
 					}
@@ -474,7 +389,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt() - 1;
 					column = arrPair.get(i).getColumnInt() - 1;
 					
-					if (board[row][column] == "+")
+					if (board[row][column] == "·")
 					{
 						count++;
 					}
@@ -491,7 +406,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				
 				if (arrPair.size() == 2)
 				{
-					if (board[row - 1][column + 1] == "+")
+					if (board[row - 1][column + 1] == "·")
 					{
 						return true;
 					}
@@ -501,7 +416,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if (board[row - 1][column + 1] == nextPlayerColor)
 					{
-						if (board[row - 2][column + 2] == " " || board[row - 2][column + 2] == "+")
+						if (board[row - 2][column + 2] == " " || board[row - 2][column + 2] == "·")
 						{
 							return true;
 						}
@@ -513,7 +428,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				else if (arrPair.size() == 3)
 				{
-					if (board[row - 1][column + 1] == "+")
+					if (board[row - 1][column + 1] == "·")
 					{
 						return true;
 					}
@@ -523,7 +438,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if (board[row - 1][column + 1] == nextPlayerColor)
 					{
-						if (board[row - 2][column + 2] == " " || board[row - 2][column + 2] == "+")
+						if (board[row - 2][column + 2] == " " || board[row - 2][column + 2] == "·")
 						{
 							return true;
 						}
@@ -533,7 +448,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 						}
 						else if (board[row - 2][column + 2] == nextPlayerColor)
 						{
-							if (board[row - 3][column + 3] == " " || board[row - 3][column + 3] == "+")
+							if (board[row - 3][column + 3] == " " || board[row - 3][column + 3] == "·")
 							{
 								return true;
 							}
@@ -551,7 +466,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt();
 					column = arrPair.get(i).getColumnInt() - 2;
 					
-					if (board[row][column] == "+")
+					if (board[row][column] == "·")
 					{
 						count++;
 					}
@@ -568,7 +483,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt();
 					column = arrPair.get(i).getColumnInt() + 2;
 					
-					if (board[row][column] == "+")
+					if (board[row][column] == "·")
 					{
 						count++;
 					}
@@ -586,7 +501,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				
 				if (arrPair.size() == 2)
 				{
-					if (board[row + 1][column - 1] == "+")
+					if (board[row + 1][column - 1] == "·")
 					{
 						return true;
 					}
@@ -596,7 +511,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if (board[row + 1][column - 1] == nextPlayerColor)
 					{
-						if (board[row + 2][column - 2] == " " || board[row + 2][column - 2] == "+")
+						if (board[row + 2][column - 2] == " " || board[row + 2][column - 2] == "·")
 						{
 							return true;
 						}
@@ -608,7 +523,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				else if (arrPair.size() == 3)
 				{
-					if (board[row + 1][column - 1] == "+")
+					if (board[row + 1][column - 1] == "·")
 					{
 						return true;
 					}
@@ -618,7 +533,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if (board[row + 1][column - 1] == nextPlayerColor)
 					{
-						if (board[row + 2][column - 2] == " " || board[row + 2][column - 2] == "+")
+						if (board[row + 2][column - 2] == " " || board[row + 2][column - 2] == "·")
 						{
 							return true;
 						}
@@ -628,7 +543,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 						}
 						else if (board[row + 2][column - 2] == nextPlayerColor)
 						{
-							if (board[row + 3][column - 3] == " " || board[row + 3][column - 3] == "+")
+							if (board[row + 3][column - 3] == " " || board[row + 3][column - 3] == "·")
 							{
 								return true;
 							}
@@ -646,7 +561,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt() + 1;
 					column = arrPair.get(i).getColumnInt() + 1;
 					
-					if (board[row][column] == "+")
+					if (board[row][column] == "·")
 					{
 						count++;
 					}
@@ -667,7 +582,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				
 				if (arrPair.size() == 2)
 				{
-					if (board[row - 1][column - 1] == "+")  // ● ● +
+					if (board[row - 1][column - 1] == "·")  // ● ● +
 					{
 						return true;
 					}
@@ -677,7 +592,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if(board[row - 1][column - 1] == nextPlayerColor)	
 					{
-						if (board[row - 2][column - 2] == " " || board[row - 2][column - 2] == "+")	// ● ● ○  or  ● ● ○ + 
+						if (board[row - 2][column - 2] == " " || board[row - 2][column - 2] == "·")	// ● ● ○  or  ● ● ○ + 
 						{
 							return true;
 						}
@@ -689,7 +604,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				else if (arrPair.size() == 3)
 				{
-					if (board[row - 1][column - 1] == "+")
+					if (board[row - 1][column - 1] == "·")
 					{
 						return true;
 					}
@@ -699,7 +614,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if (board[row - 1][column - 1] == nextPlayerColor)
 					{
-						if (board[row - 2][column - 2] == " " || board[row - 2][column - 2] == "+")
+						if (board[row - 2][column - 2] == " " || board[row - 2][column - 2] == "·")
 						{
 							return true;
 						}
@@ -709,7 +624,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 						}
 						else if (board[row - 2][column - 2] == nextPlayerColor)
 						{
-							if (board[row - 3][column - 3] == " " || board[row - 3][column - 3] == "+")
+							if (board[row - 3][column - 3] == " " || board[row - 3][column - 3] == "·")
 							{
 								return true;
 							}
@@ -727,7 +642,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt() - 1;
 					column = arrPair.get(i).getColumnInt() + 1;
 					
-					if (board[row][column] == "+")
+					if (board[row][column] == "·")
 					{
 						count++;
 					}
@@ -744,7 +659,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt();
 					column = arrPair.get(i).getColumnInt() - 2;
 					
-					if (board[row][column] == "+")
+					if (board[row][column] == "·")
 					{
 						count++;
 					}
@@ -761,7 +676,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt();
 					column = arrPair.get(i).getColumnInt() + 2;
 					
-					if (board[row][column] == "+")
+					if (board[row][column] == "·")
 					{
 						count++;
 					}
@@ -778,7 +693,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					row = arrPair.get(i).getRowInt() + 1;
 					column = arrPair.get(i).getColumnInt() - 1;
 					
-					if (board[row][column] == "+")
+					if (board[row][column] == "·")
 					{
 						count++;
 					}
@@ -795,7 +710,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				
 				if (arrPair.size() == 2)
 				{
-					if (board[row + 1][column + 1] == "+")
+					if (board[row + 1][column + 1] == "·")
 					{
 						return true;
 					}
@@ -805,7 +720,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if (board[row + 1][column + 1] == nextPlayerColor)
 					{
-						if (board[row + 2][column + 2] == " " || board[row + 2][column + 2] == "+")
+						if (board[row + 2][column + 2] == " " || board[row + 2][column + 2] == "·")
 						{
 							return true;
 						}
@@ -817,7 +732,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				else if (arrPair.size() == 3)
 				{
-					if (board[row + 1][column + 1] == "+")
+					if (board[row + 1][column + 1] == "·")
 					{
 						return true;
 					}
@@ -827,7 +742,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					}
 					else if (board[row + 1][column + 1] == nextPlayerColor)
 					{
-						if (board[row + 2][column + 2] == " " || board[row + 2][column + 2] == "+")
+						if (board[row + 2][column + 2] == " " || board[row + 2][column + 2] == "·")
 						{
 							return true;
 						}
@@ -837,7 +752,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 						}
 						else if (board[row + 2][column + 2] == nextPlayerColor)
 						{
-							if (board[row + 3][column + 3] == " " || board[row + 3][column + 3] == "+")
+							if (board[row + 3][column + 3] == " " || board[row + 3][column + 3] == "·")
 							{
 								return true;
 							}
@@ -884,10 +799,10 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				row = arrPair.get(0).getRowInt() - 1;
 				column = arrPair.get(0).getColumnInt() - 1;
 
-				if (board[row][column] == "+") // 빈공간이면
+				if (board[row][column] == "·") // 빈공간이면
 				{
 					board[row][column] = Integer.toString(1);
-					board[row + 1][column + 1] = "+";
+					board[row + 1][column + 1] = "·";
 				}
 				break;
 				
@@ -896,10 +811,10 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				row = arrPair.get(0).getRowInt() - 1;
 				column = arrPair.get(0).getColumnInt() + 1;
 				
-				if (board[row][column] == "+")
+				if (board[row][column] == "·")
 				{
 					board[row][column] = Integer.toString(1);
-					board[row + 1][column - 1] = "+";
+					board[row + 1][column - 1] = "·";
 				}
 				break;
 				
@@ -908,10 +823,10 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				row = arrPair.get(0).getRowInt();
 				column = arrPair.get(0).getColumnInt() - 2;
 				
-				if (board[row][column] == "+")
+				if (board[row][column] == "·")
 				{
 					board[row][column] = Integer.toString(1);
-					board[row][column + 2] = "+";
+					board[row][column + 2] = "·";
 				}
 				break;
 				
@@ -920,10 +835,10 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				row = arrPair.get(0).getRowInt();
 				column = arrPair.get(0).getColumnInt() + 2;
 				
-				if (board[row][column] == "+")
+				if (board[row][column] == "·")
 				{
 					board[row][column] = Integer.toString(1);
-					board[row][column - 2] = "+";
+					board[row][column - 2] = "·";
 				}
 				break;
 				
@@ -932,10 +847,10 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				row = arrPair.get(0).getRowInt() + 1;
 				column = arrPair.get(0).getColumnInt() - 1;
 				
-				if (board[row][column] == "+")
+				if (board[row][column] == "·")
 				{
 					board[row][column] = Integer.toString(1);
-					board[row - 1][column + 1] = "+";
+					board[row - 1][column + 1] = "·";
 				}
 				break;
 				
@@ -944,10 +859,10 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				row = arrPair.get(0).getRowInt() + 1;
 				column = arrPair.get(0).getColumnInt() + 1;
 				
-				if (board[row][column] == "+")
+				if (board[row][column] == "·")
 				{
 					board[row][column] = Integer.toString(1);
-					board[row - 1][column - 1] = "+";
+					board[row - 1][column - 1] = "·";
 				}
 				break;
 			}
@@ -964,7 +879,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() - 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row + 1][column + 1] = "+";
+					board[row + 1][column + 1] = "·";
 				}
 				break;
 				
@@ -976,29 +891,31 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() + 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row + 1][column - 1] = "+";
+					board[row + 1][column - 1] = "·";
 				}
 				break;
 				
 			case 3:
 				//System.out.print("Swith case : 1, 3\n");
+				row = arrPair.get(0).getRowInt();
+				column = arrPair.get(0).getColumnInt();
 				
 				if (arrPair.size() == 2)
 				{
-					if (board[arrPair.get(0).getRowInt()][arrPair.get(0).getColumnInt() - 2] == nextPlayerColor)
+					if (board[row][column - 2] == nextPlayerColor)
 					{
-						board[arrPair.get(0).getRowInt()][arrPair.get(0).getColumnInt() - 4] = nextPlayerColor;
+						board[row][column - 4] = nextPlayerColor;
 					}
 				}
 				else 
 				{
-					if (board[arrPair.get(0).getRowInt()][arrPair.get(0).getColumnInt() - 2] == nextPlayerColor && board[arrPair.get(0).getRowInt()][arrPair.get(0).getColumnInt() - 4] == nextPlayerColor)
+					if (board[row][column - 2] == nextPlayerColor && board[row][column - 4] == nextPlayerColor)
 					{
-						board[arrPair.get(0).getRowInt()][arrPair.get(0).getColumnInt() - 6] = nextPlayerColor;
+						board[row][column - 6] = nextPlayerColor;
 					}
-					else if (board[arrPair.get(0).getRowInt()][arrPair.get(0).getColumnInt() - 2] == nextPlayerColor && (board[arrPair.get(0).getRowInt()][arrPair.get(0).getColumnInt() - 4] == "+" || board[arrPair.get(0).getRowInt()][arrPair.get(0).getColumnInt() - 4] == " "))
+					else if (board[row][column - 2] == nextPlayerColor && (board[row][column - 4] == "·" || board[row][column - 4] == " "))
 					{
-						board[arrPair.get(0).getRowInt()][arrPair.get(0).getColumnInt() - 4] = nextPlayerColor;
+						board[row][column  - 4] = nextPlayerColor;
 					}
 				}
 				
@@ -1008,29 +925,31 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() - 2;
 					
 					board[row][column] = Integer.toString(i);
-					board[row][column + 2] = "+";
+					board[row][column + 2] = "·";
 				}
 				break;
 				
 			case 4:
 				//System.out.print("Swith case : 1, 4\n");
+				row = arrPair.get(arrPair.size() - 1).getRowInt();
+				column = arrPair.get(arrPair.size() - 1).getColumnInt();
 				
 				if (arrPair.size() == 2)
 				{
-					if (board[arrPair.get(arrPair.size() - 1).getRowInt()][arrPair.get(arrPair.size() - 1).getColumnInt() + 2] == nextPlayerColor)
+					if (board[row][column + 2] == nextPlayerColor)
 					{
-						board[arrPair.get(arrPair.size() - 1).getRowInt()][arrPair.get(arrPair.size() - 1).getColumnInt() + 4] = nextPlayerColor;
+						board[row][column + 4] = nextPlayerColor;
 					}
 				}
 				else 
 				{
-					if (board[arrPair.get(arrPair.size() - 1).getRowInt()][arrPair.get(arrPair.size() - 1).getColumnInt() + 2] == nextPlayerColor && board[arrPair.get(arrPair.size() - 1).getRowInt()][arrPair.get(arrPair.size() - 1).getColumnInt() + 4] == nextPlayerColor)
+					if (board[row][column + 2] == nextPlayerColor && board[row][column + 4] == nextPlayerColor)
 					{
-						board[arrPair.get(arrPair.size() - 1).getRowInt()][arrPair.get(arrPair.size() - 1).getColumnInt() + 6] = nextPlayerColor;
+						board[row][column + 6] = nextPlayerColor;
 					}
-					else if (board[arrPair.get(arrPair.size() - 1).getRowInt()][arrPair.get(arrPair.size() - 1).getColumnInt() + 2] == nextPlayerColor && (board[arrPair.get(arrPair.size() - 1).getRowInt()][arrPair.get(arrPair.size() - 1).getColumnInt() + 4] == "+" || board[arrPair.get(arrPair.size() - 1).getRowInt()][arrPair.get(arrPair.size() - 1).getColumnInt() + 4] == " "))
+					else if (board[row][column + 2] == nextPlayerColor && (board[row][column + 4] == "·" || board[row][column + 4] == " "))
 					{
-						board[arrPair.get(arrPair.size() - 1).getRowInt()][arrPair.get(arrPair.size() - 1).getColumnInt() + 4] = nextPlayerColor;
+						board[row][column + 4] = nextPlayerColor;
 					}
 				}
 				
@@ -1040,7 +959,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() + 2;
 
 					board[row][column] = Integer.toString(i);
-					board[row][column - 2] = "+";
+					board[row][column - 2] = "·";
 				}
 				break;
 				
@@ -1052,7 +971,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() - 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row - 1][column + 1] = "+";
+					board[row - 1][column + 1] = "·";
 				}
 				break;
 				
@@ -1064,7 +983,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() + 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row - 1][column - 1] = "+";
+					board[row - 1][column - 1] = "·";
 				}
 				break;
 			}
@@ -1082,29 +1001,31 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() - 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row + 1][column + 1] = "+";
+					board[row + 1][column + 1] = "·";
 				}				
 				break;
 				
 			case 2:				// (6,6)
 				//System.out.print("Swith case : 2, 2\n");
+				row = arrPair.get(0).getRowInt();
+				column = arrPair.get(0).getColumnInt();
 				
 				if (arrPair.size() == 2)
 				{
-					if (board[arrPair.get(0).getRowInt() - 1][arrPair.get(0).getColumnInt() + 1] == nextPlayerColor)
+					if (board[row - 1][column + 1] == nextPlayerColor)
 					{
-						board[arrPair.get(0).getRowInt() - 2][arrPair.get(0).getColumnInt() + 2] = nextPlayerColor;
+						board[row - 2][column + 2] = nextPlayerColor;
 					}
 				}
 				else 
 				{
-					if (board[arrPair.get(0).getRowInt() - 1][arrPair.get(0).getColumnInt() + 1] == nextPlayerColor && board[arrPair.get(0).getRowInt() - 2][arrPair.get(0).getColumnInt() + 2] == nextPlayerColor)
+					if (board[row - 1][column + 1] == nextPlayerColor && board[row - 2][column + 2] == nextPlayerColor)
 					{
-						board[arrPair.get(0).getRowInt() - 3][arrPair.get(0).getColumnInt() + 3] = nextPlayerColor;
+						board[row - 3][column + 3] = nextPlayerColor;
 					}
-					else if (board[arrPair.get(0).getRowInt() - 1][arrPair.get(0).getColumnInt() + 1] == nextPlayerColor && (board[arrPair.get(0).getRowInt() - 2][arrPair.get(0).getColumnInt() + 2] == "+" || board[arrPair.get(0).getRowInt() - 2][arrPair.get(0).getColumnInt() + 2] == " "))
+					else if (board[row - 1][column + 1] == nextPlayerColor && (board[row - 2][column + 2] == "·" || board[row][column + 2] == " "))
 					{
-						board[arrPair.get(0).getRowInt() - 2][arrPair.get(0).getColumnInt() + 2] = nextPlayerColor;
+						board[row - 2][column + 2] = nextPlayerColor;
 					}
 				}
 								
@@ -1114,7 +1035,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() + 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row + 1][column - 1] = "+";
+					board[row + 1][column - 1] = "·";
 				}				
 				break;
 				
@@ -1127,7 +1048,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() - 2;
 					
 					board[row][column] = Integer.toString(i);
-					board[row][column + 2] = "+";
+					board[row][column + 2] = "·";
 				}		
 				break;
 				
@@ -1140,28 +1061,30 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() + 2;
 					
 					board[row][column] = Integer.toString(i);
-					board[row][column - 2] = "+";
+					board[row][column - 2] = "·";
 				}	
 				break;
 			case 5:
 				//System.out.print("Swith case : 2, 5\n");
+				row = arrPair.get(arrPair.size() - 1).getRowInt();
+				column = arrPair.get(arrPair.size() - 1).getColumnInt();
 				
 				if (arrPair.size() == 2)
 				{
-					if (board[arrPair.get(arrPair.size() - 1).getRowInt() + 1][arrPair.get(arrPair.size() - 1).getColumnInt() - 1] == nextPlayerColor)
+					if (board[row + 1][column - 1] == nextPlayerColor)
 					{
-						board[arrPair.get(arrPair.size() - 1).getRowInt() + 2][arrPair.get(arrPair.size() - 1).getColumnInt() - 2] = nextPlayerColor;
+						board[row + 2][column - 2] = nextPlayerColor;
 					}
 				}
 				else 
 				{
-					if (board[arrPair.get(arrPair.size() - 1).getRowInt() + 1][arrPair.get(arrPair.size() - 1).getColumnInt() - 1] == nextPlayerColor && board[arrPair.get(arrPair.size() - 1).getRowInt() + 2][arrPair.get(arrPair.size() - 1).getColumnInt() - 2] == nextPlayerColor)
+					if (board[row + 1][column - 1] == nextPlayerColor && board[row + 2][column - 2] == nextPlayerColor)
 					{
-						board[arrPair.get(arrPair.size() - 1).getRowInt() + 3][arrPair.get(arrPair.size() - 1).getColumnInt() - 3] = nextPlayerColor;
+						board[row + 3][column - 3] = nextPlayerColor;
 					}
-					else if (board[arrPair.get(arrPair.size() - 1).getRowInt() + 1][arrPair.get(arrPair.size() - 1).getColumnInt() - 1] == nextPlayerColor && (board[arrPair.get(arrPair.size() - 1).getRowInt() + 2][arrPair.get(arrPair.size() - 1).getColumnInt() - 2] == "+" || board[arrPair.get(arrPair.size() - 1).getRowInt() + 2][arrPair.get(arrPair.size() - 1).getColumnInt() - 2] == " "))
+					else if (board[row + 1][column - 1] == nextPlayerColor && (board[row + 2][column - 2] == "·" || board[row + 2][column - 2] == " "))
 					{
-						board[arrPair.get(arrPair.size() - 1).getRowInt() + 2][arrPair.get(arrPair.size() - 1).getColumnInt() - 2] = nextPlayerColor;
+						board[row + 2][column - 2] = nextPlayerColor;
 					}
 				}
 				
@@ -1171,7 +1094,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() - 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row - 1][column + 1] = "+";
+					board[row - 1][column + 1] = "·";
 				}				
 				break;
 				
@@ -1184,7 +1107,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() + 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row - 1][column - 1] = "+";
+					board[row - 1][column - 1] = "·";
 				}	
 				break;
 			}
@@ -1195,23 +1118,25 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			{
 			case 1:	
 				//System.out.print("Swith case : 3, 1\n");
+				row = arrPair.get(0).getRowInt();
+				column = arrPair.get(0).getColumnInt();
 				
 				if (arrPair.size() == 2)
 				{
-					if (board[arrPair.get(0).getRowInt() - 1][arrPair.get(0).getColumnInt() - 1] == nextPlayerColor)
+					if (board[row - 1][column - 1] == nextPlayerColor)
 					{
-						board[arrPair.get(0).getRowInt() - 2][arrPair.get(0).getColumnInt() - 2] = nextPlayerColor;
+						board[row - 2][column - 2] = nextPlayerColor;
 					}
 				}
 				else 
 				{
-					if (board[arrPair.get(0).getRowInt() - 1][arrPair.get(0).getColumnInt() - 1] == nextPlayerColor && board[arrPair.get(0).getRowInt() - 2][arrPair.get(0).getColumnInt() - 2] == nextPlayerColor)
+					if (board[row - 1][column - 1] == nextPlayerColor && board[row - 2][column - 2] == nextPlayerColor)
 					{
-						board[arrPair.get(0).getRowInt() - 3][arrPair.get(0).getColumnInt() - 3] = nextPlayerColor;
+						board[row - 3][column - 3] = nextPlayerColor;
 					}
-					else if (board[arrPair.get(0).getRowInt() - 1][arrPair.get(0).getColumnInt() - 1] == nextPlayerColor && (board[arrPair.get(0).getRowInt() - 2][arrPair.get(0).getColumnInt() - 2] == "+" || board[arrPair.get(0).getRowInt() - 2][arrPair.get(0).getColumnInt() - 2] == " "))
+					else if (board[row - 1][column - 1] == nextPlayerColor && (board[row - 2][column - 2] == "·" || board[row - 2][column - 2] == " "))
 					{
-						board[arrPair.get(0).getRowInt() - 2][arrPair.get(0).getColumnInt() - 2] = nextPlayerColor;
+						board[row - 2][column - 2] = nextPlayerColor;
 					}
 				}
 				
@@ -1221,7 +1146,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() - 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row + 1][column + 1] = "+";
+					board[row + 1][column + 1] = "·";
 				}
 				break;
 			case 2:
@@ -1233,7 +1158,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() + 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row + 1][column - 1] = "+";
+					board[row + 1][column - 1] = "·";
 				}
 				break;
 			case 3:
@@ -1245,7 +1170,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() - 2;
 					
 					board[row][column] = Integer.toString(i);
-					board[row][column + 2] = "+";
+					board[row][column + 2] = "·";
 				}
 				break;
 			case 4:
@@ -1257,7 +1182,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() + 2;
 					
 					board[row][column] = Integer.toString(i);
-					board[row][column - 2] = "+";
+					board[row][column - 2] = "·";
 				}
 				break;
 			case 5:
@@ -1269,28 +1194,29 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() - 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row - 1][column + 1] = "+";
+					board[row - 1][column + 1] = "·";
 				}
 				break;
 			case 6:
 				//System.out.print("Swith case : 3, 6\n");
-				
+				row = arrPair.get(arrPair.size() - 1).getRowInt();
+				column = arrPair.get(arrPair.size() - 1).getColumnInt();
 				if (arrPair.size() == 2)
 				{
-					if (board[arrPair.get(arrPair.size() - 1).getRowInt() + 1][arrPair.get(arrPair.size() - 1).getColumnInt() + 1] == nextPlayerColor)
+					if (board[row + 1][column + 1] == nextPlayerColor)
 					{
-						board[arrPair.get(arrPair.size() - 1).getRowInt() + 2][arrPair.get(arrPair.size() - 1).getColumnInt() + 2] = nextPlayerColor;
+						board[row + 2][column + 2] = nextPlayerColor;
 					}
 				}
 				else 
 				{
-					if (board[arrPair.get(arrPair.size() - 1).getRowInt() + 1][arrPair.get(arrPair.size() - 1).getColumnInt() + 1] == nextPlayerColor && board[arrPair.get(arrPair.size() - 1).getRowInt() + 2][arrPair.get(arrPair.size() - 1).getColumnInt() + 2] == nextPlayerColor)
+					if (board[row + 1][column + 1] == nextPlayerColor && board[row + 2][column + 2] == nextPlayerColor)
 					{
-						board[arrPair.get(arrPair.size() - 1).getRowInt() + 3][arrPair.get(arrPair.size() - 1).getColumnInt() + 3] = nextPlayerColor;
+						board[row + 3][column + 3] = nextPlayerColor;
 					}
-					else if (board[arrPair.get(arrPair.size() - 1).getRowInt() + 1][arrPair.get(arrPair.size() - 1).getColumnInt() + 1] == nextPlayerColor && (board[arrPair.get(arrPair.size() - 1).getRowInt() + 2][arrPair.get(arrPair.size() - 1).getColumnInt() + 2] == "+" || board[arrPair.get(arrPair.size() - 1).getRowInt() + 2][arrPair.get(arrPair.size() - 1).getColumnInt() + 2] == " "))
+					else if (board[row + 1][column + 1] == nextPlayerColor && (board[row + 2][column + 2] == "·" || board[row + 2][column + 2] == " "))
 					{
-						board[arrPair.get(arrPair.size() - 1).getRowInt() + 2][arrPair.get(arrPair.size() - 1).getColumnInt() + 2] = nextPlayerColor;
+						board[row + 2][column + 2] = nextPlayerColor;
 					}
 				}
 				
@@ -1300,7 +1226,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					column = arrPair.get(i).getColumnInt() + 1;
 					
 					board[row][column] = Integer.toString(i);
-					board[row - 1][column - 1] = "+";
+					board[row - 1][column - 1] = "·";
 				}
 				break;
 			}
@@ -1413,52 +1339,28 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 	// 3. 이동 방향으로 이동할 수 있는지.
 	public void play()	
 	{						
-		currentPlayer.setBoard(board);
 		currentPlayer.play();
-		ArrayList<String> arrInput = currentPlayer.getArrInput();
-		/*
-		int moveDirection = Integer.parseInt(arrInput.get(arrInput.size() - 1));
-		currentPlayer.setMovdDirection(moveDirection);
 		
-		if (!checkMovable(arrPair))	// 움직일 수 없을 때
+//		ArrayList<String> arrInput = currentPlayer.getArrInput();
+//		int moveDirection = Integer.parseInt(arrInput.get(arrInput.size() - 1));
+//		currentPlayer.setMovdDirection(moveDirection);
+
+		if (!checkMovable(currentPlayer.getArrPair()))	// 움직일 수 없을 때
 		{
-			//System.out.print("But You Can't Move!\n");
-			//System.out.print("Choose Again!\n\n");
 			play();
 		}
 		else // 움직일 수 있을 때
 		{
-			//System.out.print("Move !\n");
-			moveLine(arrPair);
-		}
-		*/
-		
-		if(!checkOneLine(arrInput))	// 1줄이 아닐 때
-		{
-			//System.out.print("Your Input is Not a Line!\n");
-			System.out.print("Choose Again!\n");
-			play();
-		}
-		else // 한 줄이 맞을 때.
-		{
+			//System.out.print("lineDirection : " + currentPlayer.getLineDirection() + "\n");
+			//System.out.print("moveDirection : " + currentPlayer.getMoveDirection() + "\n");
+			//System.out.print("Pair size : " + currentPlayer.getArrPair().size() + " | ");
+			//for (int i = 0; i < currentPlayer.getArrPair().size(); i++)
+			//{
+			//	System.out.print("(" + currentPlayer.getArrPair().get(i).getRowInt() + ", " + currentPlayer.getArrPair().get(i).getColumnInt() + ") ");
+			//}
 			//System.out.print("\n");
-			//System.out.print(currentPlayer.getPlayerType() + " Input is a Line!\n\n");
-			
-			int moveDirection = Integer.parseInt(arrInput.get(arrInput.size() - 1));
-			currentPlayer.setMovdDirection(moveDirection);
-			
-			if (!checkMovable(arrPair))	// 움직일 수 없을 때
-			{
-				//System.out.print("But You Can't Move!\n");
-				//System.out.print("Choose Again!\n\n");
-				play();
-			}
-			else // 움직일 수 있을 때
-			{
-				//System.out.print("Move !\n");
-				moveLine(arrPair);
-			}
-		}	
+			moveLine(currentPlayer.getArrPair());
+		}
 	} // public void play()
 	
 	public boolean checkGameOver()
@@ -1473,7 +1375,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 	
 	public void changePlay() 
 	{
-		
 		int playColor = currentPlayer.getPlayColor();
 		//ArrayList<String> alphabet = (ArrayList<String>)currentPlayer.getAlphabet().clone();	// Shallow copy
 		
@@ -1483,7 +1384,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			{
 				for (int j = 0; j < board[i].length; j++)
 				{
-					if (board[i][j] != "+" && board[i][j] != " " && board[i][j] != "○")
+					if (board[i][j] != "·" && board[i][j] != " " && board[i][j] != "○")
 					{
 						board[i][j] = "●";
 					}
@@ -1496,7 +1397,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			{
 				for (int j = 0; j < board[i].length; j++)
 				{
-					if (board[i][j] != "+" && board[i][j] != " " && board[i][j] != "●")
+					if (board[i][j] != "·" && board[i][j] != " " && board[i][j] != "●")
 					{
 						board[i][j] = "○";
 					}

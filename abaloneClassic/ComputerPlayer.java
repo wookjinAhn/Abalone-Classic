@@ -2,13 +2,11 @@ package abaloneClassic;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Collections;
 
 public class ComputerPlayer extends GamePlayer
 {
 	private final Random randomSelecter = new Random();
-	
-
-	private ArrayList<String> arrInput = new ArrayList<String>();
 
 	public ComputerPlayer(int playerID)
 	{
@@ -77,36 +75,122 @@ public class ComputerPlayer extends GamePlayer
 		}
 	}
 
+	public void makePair()
+	{
+		String strFirst = arrInput.get(0);
+		Pair firstIndex = new Pair();
+		
+		String nextPlayerColor;
+		
+		if (getPlayColor() == 1)
+		{
+			nextPlayerColor = "○";
+		}
+		else
+		{
+			nextPlayerColor = "●";
+		}
+		
+		for (int i = 0; i < board.length; i++)
+		{
+			for (int j = 0; j < board[i].length; j++)
+			{
+				if (board[i][j].equals(strFirst)) 
+				{
+					firstIndex.setPair(i,j);
+					//System.out.print("firstIndex : " + firstIndex.getRowInt() + ", " + firstIndex.getColumnInt() + "\n");
+					arrPair.add(firstIndex);
+				}
+			}
+		}
+		//System.out.print("firstIndex : " + firstIndex.getRowInt() + ", " + firstIndex.getColumnInt() + "\n");
+		int row = firstIndex.getRowInt();
+		int column = firstIndex.getColumnInt();
+		switch(getLineDirection())
+		{
+		case 1: // 가로
+			if (board[row][column - 2] != nextPlayerColor && board[row][column - 2] != "·" && board[row][column - 2] != " ")
+			{
+				Pair index = new Pair();
+				index.setPair(row, column - 2);
+				//System.out.print("case 1 0 -2 | " + index.getRowInt() + ", " + index.getColumnInt() + "\n");
+				arrPair.add(index);
+			}
+			if (board[row][column + 2] != nextPlayerColor && board[row][column + 2] != "·" && board[row][column + 2] != " ")
+			{
+				Pair index = new Pair();
+				index.setPair(row, column + 2);
+				//System.out.print("case 1 0 +2 | " + index.getRowInt() + ", " + index.getColumnInt() + "\n");
+				arrPair.add(index);
+			}
+			break;
+			
+		case 2: // 왼쪽 아래
+			if (board[row - 1][column + 1] != nextPlayerColor && board[row - 1][column + 1] != "·" && board[row - 1][column + 1] != " ")
+			{
+				Pair index = new Pair();
+				index.setPair(row - 1, column + 1);
+				//System.out.print("case 2 -1 +1 | " + index.getRowInt() + ", " + index.getColumnInt() + "\n");
+				arrPair.add(index);
+			}
+			if (board[row + 1][column - 1] != nextPlayerColor && board[row + 1][column - 1] != "·" && board[row + 1][column - 1] != " ")
+			{
+				Pair index = new Pair();
+				index.setPair(row + 1, column - 1);
+				//System.out.print("case 2 +1 -1 | " + index.getRowInt() + "," + index.getColumnInt() + "\n");
+				arrPair.add(index);
+			}
+			break;
+			
+		case 3: // 오른쪽 아래
+			if (board[row - 1][column - 1] != nextPlayerColor && board[row - 1][column - 1] != "·" && board[row - 1][column - 1] != " ")
+			{
+				Pair index = new Pair();
+				index.setPair(row - 1, column - 1);
+				//System.out.print("case 3 -1 -1 | " + index.getRowInt() + ", " + index.getColumnInt() + "\n");
+				arrPair.add(index);
+			}
+			if (board[row + 1][column + 1] != nextPlayerColor && board[row + 1][column + 1] != "·" && board[row + 1][column + 1] != " ")
+			{
+				Pair index = new Pair();
+				index.setPair(row + 1, column + 1);
+				//System.out.print("case 3 +1 +1 | " + index.getRowInt() + ", " + index.getColumnInt() + "\n");
+				arrPair.add(index);
+			}
+			break;
+		}
+		
+		IndexComparator indexComparator = new IndexComparator();
+		Collections.sort(arrPair, indexComparator);	
+	}
+	
 	@Override
 	public void play()
 	{
 		arrInput.clear();
+		arrPair.clear();
+		showAvailableChoose();
 		
 		int minAlphabet = 97;
-		int maxAlphabet = 110;
-
-		ArrayList<Integer> arrAscii = new ArrayList<Integer>();
+		int maxAlphabet = minAlphabet + getAlphabet().size() - 1;
+		int minLineDirection = 1;
+		int maxLineDirection = 3;
+		int minMoveDirection = 1;
+		int maxMoveDirection = 6;
 		
-		boolean check = true;
+		Random randomSelecter = new Random();
 		
-		while (check)
-		{
-			showAvailableChoose();
-			
-			int chooseNum = 1 + randomSelecter.nextInt(3);
-			
-			for (int i = 0; i < chooseNum; i++)
-			{
-				int chooseAlphabet = minAlphabet + randomSelecter.nextInt(maxAlphabet - minAlphabet + 1);
-				arrAscii.add(chooseAlphabet);
-			}
-			int chooseDirection = 1 + randomSelecter.nextInt(6);
-			arrAscii.add(chooseDirection);
-			
-			check = checkRightInput(arrAscii, availableAlphabet);
-		}
+		int firstAlphabet = minAlphabet + randomSelecter.nextInt(maxAlphabet - minAlphabet + 1);
+		int lineDirection = minLineDirection + randomSelecter.nextInt(maxLineDirection - minLineDirection + 1);
+		setLineDirection(lineDirection);
+		int moveDirection = minMoveDirection + randomSelecter.nextInt(maxMoveDirection - minMoveDirection + 1);
+		setMoveDirection(moveDirection);
 		
+		char charFirstAlphabet = (char)firstAlphabet;
+		arrInput.add(Character.toString(charFirstAlphabet));
+		//System.out.print("Choose : " + charFirstAlphabet + "\n");
 		
+		makePair();
 	}
 
 }

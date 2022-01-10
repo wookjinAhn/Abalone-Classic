@@ -13,8 +13,8 @@ public class Pair
 	
 	Pair(int row, int column) 
 	{
-		this.row = row;
-		this.column = column;
+		this.row = Integer.valueOf(row);
+		this.column = Integer.valueOf(column);
     }
 
     public Integer getRow()
@@ -45,5 +45,11 @@ public class Pair
     public void setColumn(int column)
     {
     	this.column = column;
+    }
+    
+    public void setPair(int row, int column)
+    {
+    	this.row = Integer.valueOf(row);
+    	this.column = Integer.valueOf(column);
     }
 }

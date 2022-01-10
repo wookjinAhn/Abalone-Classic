@@ -4,8 +4,6 @@ import java.util.Comparator;
 
 public class IndexComparator implements Comparator<Pair>
 {
-	public int x;
-	
 	@Override
 	public int compare(Pair p1, Pair p2) 
 	{

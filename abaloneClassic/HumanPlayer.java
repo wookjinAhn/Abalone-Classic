@@ -161,25 +161,25 @@ public class HumanPlayer extends GamePlayer
 		if (garoCount == arrPair.size())
 		{
 			this.setLineDirection(1);
-			System.out.print("Garo\n");
+			//System.out.print("Garo\n");
 			return true;
 		}
 		else if (leftDiagonalCount == arrPair.size())
 		{
 			this.setLineDirection(2);
-			System.out.print("LeftDiagonal\n");
+			//System.out.print("LeftDiagonal\n");
 			return true;
 		}
 		else if (rightDiagonalCount == arrPair.size())
 		{
 			this.setLineDirection(3);
-			System.out.print("RightDiagonal\n");
+			//System.out.print("RightDiagonal\n");
 			return true;
 		}
 		else // 직선이 아닐 때
 		{
 			arrPair.clear();
-			System.out.print("Not a Line\n");
+			//System.out.print("Not a Line\n");
 			return false;
 		}
 	}
@@ -187,28 +187,12 @@ public class HumanPlayer extends GamePlayer
 	@Override
 	public void play()
 	{
-		/*
-		System.out.print("+-------------------------------\n");
-		System.out.print("| CurrentPalyer.play() : board\n");
-		for (int i = 0; i < board.length; i++)
-		{
-			System.out.print("| ");
-			for (int j = 0; j < board[i].length; j++)
-			{
-				System.out.print(board[i][j]);
-			}
-			System.out.print("\n");
-		}
-		System.out.print("+-------------------------------\n");
-		*/
-		
 		boolean bRightInput = false;
 		boolean bOneLine = false;
 		
-		while (!bRightInput)
+		while (!bRightInput || !bOneLine)
 		{
 			arrInput.clear();
-			
 			showAvailableChoose();
 			scanner = new Scanner(System.in);
 			
@@ -224,17 +208,11 @@ public class HumanPlayer extends GamePlayer
 				arrAscii.add((int)byteAscii[0]);
 			} // End input -> Ascii code
 			
-			bRightInput = checkRightInput(arrAscii, availableAlphabet);
-			//bOneLine = checkOneLine();
-			//if (checkRightInput(arrAscii, availableAlphabet))
-			//{
-			//	if(checkOneLine())
-			//	{
-			//		bOneLine = true;
-			//		break;
-			//	}
-			//}
+			bRightInput = checkRightInput(arrAscii, availableAlphabet);	// arrInput 
+			bOneLine = checkOneLine();	// arrPair
 		}
+		setMoveDirection(Integer.parseInt(arrInput.get(arrInput.size() - 1)));
+		
 		return;
 	}
 
