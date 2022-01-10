@@ -187,6 +187,7 @@ public class HumanPlayer extends GamePlayer
 	@Override
 	public void play()
 	{
+		/*
 		System.out.print("+-------------------------------\n");
 		System.out.print("| CurrentPalyer.play() : board\n");
 		for (int i = 0; i < board.length; i++)
@@ -199,11 +200,12 @@ public class HumanPlayer extends GamePlayer
 			System.out.print("\n");
 		}
 		System.out.print("+-------------------------------\n");
+		*/
 		
 		boolean bRightInput = false;
 		boolean bOneLine = false;
 		
-		while (!bOneLine)
+		while (!bRightInput)
 		{
 			arrInput.clear();
 			
@@ -223,15 +225,15 @@ public class HumanPlayer extends GamePlayer
 			} // End input -> Ascii code
 			
 			bRightInput = checkRightInput(arrAscii, availableAlphabet);
-			bOneLine = checkOneLine();
-			if (checkRightInput(arrAscii, availableAlphabet))
-			{
-				if(checkOneLine())
-				{
-					bOneLine = true;
-					break;
-				}
-			}
+			//bOneLine = checkOneLine();
+			//if (checkRightInput(arrAscii, availableAlphabet))
+			//{
+			//	if(checkOneLine())
+			//	{
+			//		bOneLine = true;
+			//		break;
+			//	}
+			//}
 		}
 		return;
 	}

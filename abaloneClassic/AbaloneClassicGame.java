@@ -1416,9 +1416,10 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		currentPlayer.setBoard(board);
 		currentPlayer.play();
 		ArrayList<String> arrInput = currentPlayer.getArrInput();
-
+		/*
 		int moveDirection = Integer.parseInt(arrInput.get(arrInput.size() - 1));
 		currentPlayer.setMovdDirection(moveDirection);
+		
 		if (!checkMovable(arrPair))	// 움직일 수 없을 때
 		{
 			//System.out.print("But You Can't Move!\n");
@@ -1430,8 +1431,8 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			//System.out.print("Move !\n");
 			moveLine(arrPair);
 		}
+		*/
 		
-		/*
 		if(!checkOneLine(arrInput))	// 1줄이 아닐 때
 		{
 			//System.out.print("Your Input is Not a Line!\n");
@@ -1458,7 +1459,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				moveLine(arrPair);
 			}
 		}	
-		*/
 	} // public void play()
 	
 	public boolean checkGameOver()
