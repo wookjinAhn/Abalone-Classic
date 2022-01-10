@@ -9,6 +9,8 @@ public abstract class GamePlayer
 	private final int playerID;
 	private Scanner scanner;
 	private int playColor = 0;		// black = 1, white = 2 
+	private String playerColor;
+	private String nextPlayerColor;
 	private int lineDirection = -1; 
 	private int moveDirection = -1;
 	
@@ -41,12 +43,14 @@ public abstract class GamePlayer
 		
 		if ((playColor.equalsIgnoreCase(strBlack)) || (playColor.equalsIgnoreCase(strB)))
 		{
-			this.playColor = 1;
+			this.playerColor = "●";
+			this.nextPlayerColor = "○";
 			System.out.print(getPlayerType() + "Choose BLACK ●! First Turn.\n");
 		}
 		else if ((playColor.equalsIgnoreCase(strWhite)) || (playColor.equalsIgnoreCase(strW)))
 		{
-			this.playColor = 2;
+			this.playerColor = "○";
+			this.nextPlayerColor = "●";
 			System.out.print(getPlayerType() + "Choose WHITE ○! Second Turn.\n");
 		}
 		else
@@ -61,6 +65,26 @@ public abstract class GamePlayer
 	public void setPlayColor(int playColor)
 	{
 		this.playColor = playColor;
+	}
+	
+	public String getPlayerColor()
+	{
+		return playerColor;
+	}
+	
+	public void setPlayerColor(String playerColor)
+	{
+		this.playerColor = playerColor;
+	}
+	
+	public String getNextPlayerColor()
+	{
+		return nextPlayerColor;
+	}
+	
+	public void setNextPlayerColor(String nextPlayerColor)
+	{
+		this.nextPlayerColor = nextPlayerColor;
 	}
 	
 	public int getLineDirection() 
@@ -119,26 +143,9 @@ public abstract class GamePlayer
 	}
 
 	
-	public void showAvailableChoose()
-	{
-		//System.out.print("Choose Alphabet and Direction\n");
-		System.out.print("Alphabet : ");
-		for (int i = 0; i < this.getAlphabet().size(); i++)
-		{
-			System.out.print(availableAlphabet.get(i) + " ");
-		}
-		System.out.print(" | size : " + availableAlphabet.size() + "\n");
-//		System.out.print("Direction :  1 2 \n");
-//		if (this.getPlayColor() == 1)
-//		{
-//			System.out.print("            3 ● 4\n");
-//		}
-//		else
-//		{
-//			System.out.print("            3 ○ 4\n");
-//		}
-//		System.out.print("             5 6 \n");
-	}
+
+	
+	public abstract void showAvailableChoose();
 	
 	public abstract void play();
 	

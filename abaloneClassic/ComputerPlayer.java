@@ -80,17 +80,8 @@ public class ComputerPlayer extends GamePlayer
 		String strFirst = arrInput.get(0);
 		Pair firstIndex = new Pair();
 		
-		String nextPlayerColor;
-		
-		if (getPlayColor() == 1)
-		{
-			nextPlayerColor = "○";
-		}
-		else
-		{
-			nextPlayerColor = "●";
-		}
-		
+		String nextPlayerColor = getNextPlayerColor();
+
 		for (int i = 0; i < board.length; i++)
 		{
 			for (int j = 0; j < board[i].length; j++)
@@ -98,12 +89,11 @@ public class ComputerPlayer extends GamePlayer
 				if (board[i][j].equals(strFirst)) 
 				{
 					firstIndex.setPair(i,j);
-					//System.out.print("firstIndex : " + firstIndex.getRowInt() + ", " + firstIndex.getColumnInt() + "\n");
 					arrPair.add(firstIndex);
 				}
 			}
 		}
-		//System.out.print("firstIndex : " + firstIndex.getRowInt() + ", " + firstIndex.getColumnInt() + "\n");
+		
 		int row = firstIndex.getRowInt();
 		int column = firstIndex.getColumnInt();
 		switch(getLineDirection())
@@ -113,14 +103,12 @@ public class ComputerPlayer extends GamePlayer
 			{
 				Pair index = new Pair();
 				index.setPair(row, column - 2);
-				//System.out.print("case 1 0 -2 | " + index.getRowInt() + ", " + index.getColumnInt() + "\n");
 				arrPair.add(index);
 			}
 			if (board[row][column + 2] != nextPlayerColor && board[row][column + 2] != "·" && board[row][column + 2] != " ")
 			{
 				Pair index = new Pair();
 				index.setPair(row, column + 2);
-				//System.out.print("case 1 0 +2 | " + index.getRowInt() + ", " + index.getColumnInt() + "\n");
 				arrPair.add(index);
 			}
 			break;
@@ -130,14 +118,12 @@ public class ComputerPlayer extends GamePlayer
 			{
 				Pair index = new Pair();
 				index.setPair(row - 1, column + 1);
-				//System.out.print("case 2 -1 +1 | " + index.getRowInt() + ", " + index.getColumnInt() + "\n");
 				arrPair.add(index);
 			}
 			if (board[row + 1][column - 1] != nextPlayerColor && board[row + 1][column - 1] != "·" && board[row + 1][column - 1] != " ")
 			{
 				Pair index = new Pair();
 				index.setPair(row + 1, column - 1);
-				//System.out.print("case 2 +1 -1 | " + index.getRowInt() + "," + index.getColumnInt() + "\n");
 				arrPair.add(index);
 			}
 			break;
@@ -147,14 +133,12 @@ public class ComputerPlayer extends GamePlayer
 			{
 				Pair index = new Pair();
 				index.setPair(row - 1, column - 1);
-				//System.out.print("case 3 -1 -1 | " + index.getRowInt() + ", " + index.getColumnInt() + "\n");
 				arrPair.add(index);
 			}
 			if (board[row + 1][column + 1] != nextPlayerColor && board[row + 1][column + 1] != "·" && board[row + 1][column + 1] != " ")
 			{
 				Pair index = new Pair();
 				index.setPair(row + 1, column + 1);
-				//System.out.print("case 3 +1 +1 | " + index.getRowInt() + ", " + index.getColumnInt() + "\n");
 				arrPair.add(index);
 			}
 			break;
@@ -183,8 +167,6 @@ public class ComputerPlayer extends GamePlayer
 		int minMoveDirection = 1;
 		int maxMoveDirection = 6;
 		
-		Random randomSelecter = new Random();
-		
 		int firstAlphabet = minAlphabet + randomSelecter.nextInt(maxAlphabet - minAlphabet + 1);
 		int lineDirection = minLineDirection + randomSelecter.nextInt(maxLineDirection - minLineDirection + 1);
 		setLineDirection(lineDirection);
@@ -193,9 +175,19 @@ public class ComputerPlayer extends GamePlayer
 		
 		char charFirstAlphabet = (char)firstAlphabet;
 		arrInput.add(Character.toString(charFirstAlphabet));
-		//System.out.print("Choose : " + charFirstAlphabet + "\n");
 		
 		makePair();
+	}
+	
+	@Override
+	public void showAvailableChoose()
+	{
+		System.out.print("Alphabet : ");
+		for (int i = 0; i < this.getAlphabet().size(); i++)
+		{
+			System.out.print(availableAlphabet.get(i) + " ");
+		}
+		System.out.print(" | size : " + availableAlphabet.size() + "\n");
 	}
 
 }

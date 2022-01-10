@@ -216,4 +216,19 @@ public class HumanPlayer extends GamePlayer
 		return;
 	}
 
+	@Override
+	public void showAvailableChoose()
+	{
+		String nextPlayerColor = getNextPlayerColor();
+		System.out.print("Choose Alphabet and Direction\n");
+		System.out.print("Alphabet : ");
+		for (int i = 0; i < this.getAlphabet().size(); i++)
+		{
+			System.out.print(availableAlphabet.get(i) + " ");
+		}
+		System.out.print(" | size : " + availableAlphabet.size() + "\n");
+		System.out.print("Direction :  1 2 \n");
+		System.out.print("            3 " + nextPlayerColor + " 4\n");
+		System.out.print("             5 6 \n");
+	}
 }

@@ -48,13 +48,17 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		
 		currentPlayer.setPlayColor(strPlayColor);
 
-		if (currentPlayer.getPlayColor() == 1)
+		if (currentPlayer.getPlayerColor() == "●")
 		{
 			secondPlayer.setPlayColor(2);
+			secondPlayer.setPlayerColor("○");
+			secondPlayer.setNextPlayerColor("●");
 		}
 		else
 		{
 			secondPlayer.setPlayColor(1);
+			secondPlayer.setPlayerColor("●");
+			secondPlayer.setNextPlayerColor("○");
 			System.out.print("turn change !\n");
 			changePlayer();
 		}
@@ -64,7 +68,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 	{
 		int playColor = currentPlayer.getPlayColor();
 		ArrayList<String> alphabet = (ArrayList<String>)currentPlayer.getAlphabet().clone();	// Shallow copy
-		
+		/*
 		// Color Stone -> Alphabet
 		if (playColor == 1)		// black Color
 		{
@@ -91,6 +95,18 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 						board[i][j] = alphabet.get(0);
 						alphabet.remove(0);
 					}
+				}
+			}
+		}
+		*/
+		for (int i = 0; i < board.length; i++)
+		{
+			for (int j = 0; j < board[i].length; j++)
+			{
+				if (board[i][j] == currentPlayer.getPlayerColor())
+				{
+					board[i][j] = alphabet.get(0);
+					alphabet.remove(0);
 				}
 			}
 		}
@@ -124,13 +140,13 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 	// 2 - 2 상대방 돌 뒤에 내 돌이 있을 때.
 	public boolean checkMovable(ArrayList<Pair> arrPair)
 	{
-		String nextPlayerColor;
+		String nextPlayerColor = currentPlayer.getNextPlayerColor();
 		int lineDirection = currentPlayer.getLineDirection();
 		int moveDirection = currentPlayer.getMoveDirection();
 		int row = 0;
 		int column = 0;
 		int count = 0;
-		
+		/*
 		if (currentPlayer.getPlayColor() == 1)
 		{
 			nextPlayerColor = "○";
@@ -139,7 +155,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		{
 			nextPlayerColor = "●";
 		}
-		
+		*/
 		switch(lineDirection)
 		{
 		case 0:
@@ -773,12 +789,12 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 
 	public void moveLine(ArrayList<Pair> arrPair)
 	{
-		String nextPlayerColor;
+		String nextPlayerColor = currentPlayer.getNextPlayerColor();
 		int lineDirection = currentPlayer.getLineDirection();
 		int moveDirection = currentPlayer.getMoveDirection();
 		int row = 0;
 		int column = 0;
-		
+		/*
 		if (currentPlayer.getPlayColor() == 1)
 		{
 			nextPlayerColor = "○";
@@ -787,7 +803,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		{
 			nextPlayerColor = "●";
 		}
-		
+		*/
 		// 일단 방해물이 없다고 가정하고 움직임.
 		switch(lineDirection)
 		{
@@ -1375,9 +1391,11 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 	
 	public void changePlay() 
 	{
-		int playColor = currentPlayer.getPlayColor();
+		//int playerColor = currentPlayer.getPlayColor();
+		String playerColor = currentPlayer.getPlayerColor();
+		String nextPlayerColor = currentPlayer.getNextPlayerColor();
 		//ArrayList<String> alphabet = (ArrayList<String>)currentPlayer.getAlphabet().clone();	// Shallow copy
-		
+		/*
 		if (playColor == 1)		// black Color
 		{
 			for (int i = 0; i < board.length; i++)
@@ -1401,6 +1419,17 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 					{
 						board[i][j] = "○";
 					}
+				}
+			}
+		}
+		*/
+		for (int i = 0; i < board.length; i++)
+		{
+			for (int j = 0; j < board[i].length; j++)
+			{
+				if (board[i][j] != "·" && board[i][j] != " " && board[i][j] != nextPlayerColor)
+				{
+					board[i][j] = playerColor;
 				}
 			}
 		}
