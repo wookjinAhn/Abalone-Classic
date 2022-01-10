@@ -162,6 +162,11 @@ public class ComputerPlayer extends GamePlayer
 		
 		IndexComparator indexComparator = new IndexComparator();
 		Collections.sort(arrPair, indexComparator);	
+		
+		if (arrPair.size() == 1)
+		{
+			setLineDirection(0);
+		}
 	}
 	
 	@Override
