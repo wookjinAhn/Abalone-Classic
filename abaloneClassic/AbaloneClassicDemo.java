@@ -13,7 +13,7 @@ public class AbaloneClassicDemo
 		ComputerPlayer computer1 = new ComputerPlayer(1);
 		ComputerPlayer computer2 = new ComputerPlayer(2);
 		
-		AbaloneClassicGame game = new AbaloneClassicGame(computer1, computer2);
+		AbaloneClassicGame game = new AbaloneClassicGame(man, computer2);
 
 		//for (int i = 0; i < 4; i++)
 		while (!game.checkGameOver())

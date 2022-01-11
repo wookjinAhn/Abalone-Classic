@@ -99,8 +99,6 @@ public class HumanPlayer extends GamePlayer
 
 	public boolean checkOneLine()
 	{
-		arrPair.clear();
-		
 		for (int itarr = 0; itarr < arrInput.size() - 1; itarr++)	// 마지막 direction 빼고 비교
 		{
 			String strIt = arrInput.get(itarr);
@@ -192,8 +190,11 @@ public class HumanPlayer extends GamePlayer
 		
 		while (!bRightInput || !bOneLine)
 		{
-			arrInput.clear();
 			showAvailableChoose();
+			
+			arrInput.clear();
+			arrPair.clear();
+			
 			scanner = new Scanner(System.in);
 			
 			String strInput = scanner.nextLine();
@@ -225,7 +226,8 @@ public class HumanPlayer extends GamePlayer
 		{
 			System.out.print(availableAlphabet.get(i) + " ");
 		}
-		System.out.print(" | size : " + availableAlphabet.size() + "\n");
+		System.out.print("\n");
+		//System.out.print(" | size : " + availableAlphabet.size() + "\n");
 		System.out.print("Direction :  1 2 \n");
 		System.out.print("            3 " + nextPlayerColor + " 4\n");
 		System.out.print("             5 6 \n");

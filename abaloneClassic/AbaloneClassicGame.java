@@ -50,13 +50,11 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 
 		if (currentPlayer.getPlayerColor() == "●")
 		{
-			secondPlayer.setPlayColor(2);
 			secondPlayer.setPlayerColor("○");
 			secondPlayer.setNextPlayerColor("●");
 		}
 		else
 		{
-			secondPlayer.setPlayColor(1);
 			secondPlayer.setPlayerColor("●");
 			secondPlayer.setNextPlayerColor("○");
 			System.out.print("turn change !\n");
@@ -66,8 +64,8 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		
 	public void visualize()
 	{
-		int playColor = currentPlayer.getPlayColor();
-		ArrayList<String> alphabet = (ArrayList<String>)currentPlayer.getAlphabet().clone();	// deep copy
+		ArrayList<String> availableAlphabet = new ArrayList<String>(); 
+		availableAlphabet.addAll(currentPlayer.getAlphabet());	// deep copy
 		
 		for (int i = 0; i < board.length; i++)
 		{
@@ -75,8 +73,8 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			{
 				if (board[i][j] == currentPlayer.getPlayerColor())
 				{
-					board[i][j] = alphabet.get(0);
-					alphabet.remove(0);
+					board[i][j] = availableAlphabet.get(0);
+					availableAlphabet.remove(0);
 				}
 			}
 		}
@@ -90,6 +88,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			}
 			System.out.print("\n");
 		}
+		System.out.print("Left Stone for Win : " + (nextPlayer.getAlphabet().size() - 8) + "\n");
 	} // End public void visualize()
 
 	public boolean checkAlphabet(String board)
@@ -1237,7 +1236,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			if (board[3][i] != " " || board[3][20 - i] != " ")
 			{
 				board[3][i] = " ";
-				board[2][20 - i] = " ";
+				board[3][20 - i] = " ";
 				nextPlayer.removeLastAlphabet();
 				return;
 			}
@@ -1274,8 +1273,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			board[5][20] = " ";
 			nextPlayer.removeLastAlphabet();
 			return;
-		}
-		
+		}		
 	} // End void checkOut()
 	
 	public void play()	

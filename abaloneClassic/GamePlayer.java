@@ -141,9 +141,6 @@ public abstract class GamePlayer
 	{
 		return arrPair;
 	}
-
-	
-
 	
 	public abstract void showAvailableChoose();
 	

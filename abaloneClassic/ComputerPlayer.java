@@ -156,9 +156,9 @@ public class ComputerPlayer extends GamePlayer
 	@Override
 	public void play()
 	{
+		//showAvailableChoose();
 		arrInput.clear();
 		arrPair.clear();
-		showAvailableChoose();
 		
 		int minAlphabet = 97;
 		int maxAlphabet = minAlphabet + getAlphabet().size() - 1;
