@@ -67,38 +67,8 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 	public void visualize()
 	{
 		int playColor = currentPlayer.getPlayColor();
-		ArrayList<String> alphabet = (ArrayList<String>)currentPlayer.getAlphabet().clone();	// Shallow copy
-		/*
-		// Color Stone -> Alphabet
-		if (playColor == 1)		// black Color
-		{
-			for (int i = 0; i < board.length; i++)
-			{
-				for (int j = 0; j < board[i].length; j++)
-				{
-					if (board[i][j] == "●")
-					{
-						board[i][j] = alphabet.get(0);
-						alphabet.remove(0);
-					}
-				}
-			}
-		}
-		else	// white color
-		{
-			for (int i = 0; i < board.length; i++)
-			{
-				for (int j = 0; j < board[i].length; j++)
-				{
-					if (board[i][j] == "○")
-					{
-						board[i][j] = alphabet.get(0);
-						alphabet.remove(0);
-					}
-				}
-			}
-		}
-		*/
+		ArrayList<String> alphabet = (ArrayList<String>)currentPlayer.getAlphabet().clone();	// deep copy
+		
 		for (int i = 0; i < board.length; i++)
 		{
 			for (int j = 0; j < board[i].length; j++)
@@ -122,7 +92,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		}
 	} // End public void visualize()
 
-	// 
 	public boolean checkAlphabet(String board)
 	{
 		byte[] byteAscii = board.getBytes(StandardCharsets.US_ASCII);
@@ -794,24 +763,13 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		int moveDirection = currentPlayer.getMoveDirection();
 		int row = 0;
 		int column = 0;
-		/*
-		if (currentPlayer.getPlayColor() == 1)
-		{
-			nextPlayerColor = "○";
-		}
-		else
-		{
-			nextPlayerColor = "●";
-		}
-		*/
-		// 일단 방해물이 없다고 가정하고 움직임.
+
 		switch(lineDirection)
 		{
 		case 0:	// 1개 Pair == 아무 방향 이동 가능
 			switch(moveDirection)
 			{
 			case 1:
-				//System.out.print("Swith case : 0, 1\n");
 				row = arrPair.get(0).getRowInt() - 1;
 				column = arrPair.get(0).getColumnInt() - 1;
 
@@ -823,7 +781,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 2:
-				//System.out.print("Swith case : 0, 2\n");
 				row = arrPair.get(0).getRowInt() - 1;
 				column = arrPair.get(0).getColumnInt() + 1;
 				
@@ -835,7 +792,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 3:
-				//System.out.print("Swith case : 0, 3\n");
 				row = arrPair.get(0).getRowInt();
 				column = arrPair.get(0).getColumnInt() - 2;
 				
@@ -847,7 +803,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 4:
-				//System.out.print("Swith case : 0, 4\n");
 				row = arrPair.get(0).getRowInt();
 				column = arrPair.get(0).getColumnInt() + 2;
 				
@@ -859,7 +814,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 5:
-				//System.out.print("Swith case : 0, 5\n");
 				row = arrPair.get(0).getRowInt() + 1;
 				column = arrPair.get(0).getColumnInt() - 1;
 				
@@ -871,7 +825,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 6:
-				//System.out.print("Swith case : 0, 6\n");
 				row = arrPair.get(0).getRowInt() + 1;
 				column = arrPair.get(0).getColumnInt() + 1;
 				
@@ -888,7 +841,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			switch(moveDirection)	//  1 2 
 			{						// 3 ● 4
 			case 1:					//  5 6
-				//System.out.print("Swith case : 1, 1\n");
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt() - 1;
@@ -900,7 +852,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 2:
-				//System.out.print("Swith case : 1, 2\n");
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt() - 1;
@@ -912,7 +863,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 3:
-				//System.out.print("Swith case : 1, 3\n");
 				row = arrPair.get(0).getRowInt();
 				column = arrPair.get(0).getColumnInt();
 				
@@ -946,7 +896,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 4:
-				//System.out.print("Swith case : 1, 4\n");
 				row = arrPair.get(arrPair.size() - 1).getRowInt();
 				column = arrPair.get(arrPair.size() - 1).getColumnInt();
 				
@@ -980,7 +929,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 5:
-				//System.out.print("Swith case : 1, 5\n");
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt() + 1;
@@ -992,7 +940,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 6:
-				//System.out.print("Swith case : 1, 6\n");
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt() + 1;
@@ -1008,9 +955,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		case 2: // 왼쪽 아래					(5,7)
 			switch(moveDirection)	//  1 2 	(6,6)
 			{						// 3 ● 4	(7,5)
-			case 1:					//  5 6		(8,4)	(9,3)
-				//System.out.print("Swith case : 2, 1\n");
-				
+			case 1:					//  5 6					
 				for (int i = 0;  i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt() - 1;
@@ -1021,8 +966,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}				
 				break;
 				
-			case 2:				// (6,6)
-				//System.out.print("Swith case : 2, 2\n");
+			case 2:		
 				row = arrPair.get(0).getRowInt();
 				column = arrPair.get(0).getColumnInt();
 				
@@ -1056,8 +1000,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 3:
-				//System.out.print("Swith case : 2, 3\n");
-				
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt();
@@ -1068,9 +1010,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}		
 				break;
 				
-			case 4:
-				//System.out.print("Swith case : 2, 4\n");
-				
+			case 4:				
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt();
@@ -1081,7 +1021,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}	
 				break;
 			case 5:
-				//System.out.print("Swith case : 2, 5\n");
 				row = arrPair.get(arrPair.size() - 1).getRowInt();
 				column = arrPair.get(arrPair.size() - 1).getColumnInt();
 				
@@ -1115,8 +1054,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				break;
 				
 			case 6:
-				//System.out.print("Swith case : 2, 6\n");
-				
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt() + 1;
@@ -1133,7 +1070,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			switch(moveDirection)
 			{
 			case 1:	
-				//System.out.print("Swith case : 3, 1\n");
 				row = arrPair.get(0).getRowInt();
 				column = arrPair.get(0).getColumnInt();
 				
@@ -1166,8 +1102,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				break;
 			case 2:
-				//System.out.print("Swith case : 3, 2\n");
-				
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt() - 1;
@@ -1178,8 +1112,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				break;
 			case 3:
-				//System.out.print("Swith case : 3, 3\n");
-				
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt();
@@ -1190,8 +1122,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				break;
 			case 4:
-				//System.out.print("Swith case : 3, 4\n");
-				
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt();
@@ -1202,8 +1132,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				break;
 			case 5:
-				//System.out.print("Swith case : 3, 5\n");
-				
 				for (int i = 0; i < arrPair.size(); i++)
 				{
 					row = arrPair.get(i).getRowInt() + 1;
@@ -1214,7 +1142,6 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 				}
 				break;
 			case 6:
-				//System.out.print("Swith case : 3, 6\n");
 				row = arrPair.get(arrPair.size() - 1).getRowInt();
 				column = arrPair.get(arrPair.size() - 1).getColumnInt();
 				if (arrPair.size() == 2)
@@ -1248,7 +1175,7 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			}
 			break; // End switch(lineDirction == 3)
 		}
-	}
+	} // End void moveLine
 	
 	public void checkOut()
 	{
@@ -1349,40 +1276,25 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 			return;
 		}
 		
-	}
+	} // End void checkOut()
 	
-	// input 값이 제대로 들어왔는지 체크. 
-	// 3. 이동 방향으로 이동할 수 있는지.
 	public void play()	
 	{						
 		currentPlayer.play();
-		
-//		ArrayList<String> arrInput = currentPlayer.getArrInput();
-//		int moveDirection = Integer.parseInt(arrInput.get(arrInput.size() - 1));
-//		currentPlayer.setMovdDirection(moveDirection);
 
-		if (!checkMovable(currentPlayer.getArrPair()))	// 움직일 수 없을 때
+		if (!checkMovable(currentPlayer.getArrPair()))	
 		{
 			play();
 		}
-		else // 움직일 수 있을 때
+		else 
 		{
-			//System.out.print("lineDirection : " + currentPlayer.getLineDirection() + "\n");
-			//System.out.print("moveDirection : " + currentPlayer.getMoveDirection() + "\n");
-			//System.out.print("Pair size : " + currentPlayer.getArrPair().size() + " | ");
-			//for (int i = 0; i < currentPlayer.getArrPair().size(); i++)
-			//{
-			//	System.out.print("(" + currentPlayer.getArrPair().get(i).getRowInt() + ", " + currentPlayer.getArrPair().get(i).getColumnInt() + ") ");
-			//}
-			//System.out.print("\n");
 			moveLine(currentPlayer.getArrPair());
 		}
-	} // public void play()
+	} // End public void play()
 	
 	public boolean checkGameOver()
-	{
-		// 상대방 돌을 6개 먼저 밀어내는 사람이 이김. == 상대방 돌이 8개가 남아있으면 
-		if (nextPlayer.getAlphabet().size() == 8)
+	{ 
+		if (nextPlayer.getAlphabet().size() == 8)	// 상대방 돌을 6개 먼저 밀어내는 사람이 이김. == 상대방 돌이 8개가 남아있으면
 		{
 			return true;
 		}
@@ -1391,38 +1303,9 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 	
 	public void changePlay() 
 	{
-		//int playerColor = currentPlayer.getPlayColor();
 		String playerColor = currentPlayer.getPlayerColor();
 		String nextPlayerColor = currentPlayer.getNextPlayerColor();
-		//ArrayList<String> alphabet = (ArrayList<String>)currentPlayer.getAlphabet().clone();	// Shallow copy
-		/*
-		if (playColor == 1)		// black Color
-		{
-			for (int i = 0; i < board.length; i++)
-			{
-				for (int j = 0; j < board[i].length; j++)
-				{
-					if (board[i][j] != "·" && board[i][j] != " " && board[i][j] != "○")
-					{
-						board[i][j] = "●";
-					}
-				}
-			}
-		}
-		else	// white color
-		{
-			for (int i = 0; i < board.length; i++)
-			{
-				for (int j = 0; j < board[i].length; j++)
-				{
-					if (board[i][j] != "·" && board[i][j] != " " && board[i][j] != "●")
-					{
-						board[i][j] = "○";
-					}
-				}
-			}
-		}
-		*/
+
 		for (int i = 0; i < board.length; i++)
 		{
 			for (int j = 0; j < board[i].length; j++)
@@ -1454,5 +1337,5 @@ public class AbaloneClassicGame extends TwoPlayerTurnGame
 		
 		changePlayer();
 	}
-} // public void changePlay() 
+} // End public void changePlay() 
 
